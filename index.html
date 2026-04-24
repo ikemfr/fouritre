@@ -132,7 +132,7 @@ textarea { font-size: 14px; height: 40px; }
 </div></div>
 <div id="s-import" class="sect"><div class="cr">
 <button class="sb" id="b-img"></button><input type="file" id="f-img" accept="image/*">
-<label id="lThresh"></label><input type="range" id="r-th" min="20" max="500" value="250"><input type="number" id="n-th" min="20" max="500" value="250"><span class="ht" id="hThresh">?</span>
+<label id="lThresh"></label><input type="range" id="r-th" min="5" max="500" value="250"><input type="number" id="n-th" min="5" max="500" value="250"><span class="ht" id="hThresh">?</span>
 <label id="lContN"></label><input type="range" id="r-cn" min="1" max="1000" value="100"><input type="number" id="n-cn" min="1" max="1000" value="100"><span class="ht" id="hContN">?</span>
 <button class="sb" id="b-redet" style="display:none"></button>
 <button class="sb" id="b-mono" onclick="tgMono()"></button>
@@ -141,8 +141,8 @@ textarea { font-size: 14px; height: 40px; }
 <label id="lTxtIn"></label><textarea id="txtIn" rows="2">&#960;</textarea>
 <label id="lFont"></label><select id="selFont"><option value="serif">Serif</option><option value="sans-serif">Sans</option><option value="'Noto Sans JP'">Noto Sans JP</option><option value="'Noto Serif JP'">Noto Serif JP</option><option value="'Playfair Display'">Playfair</option><option value="'Caveat'">Caveat</option><option value="monospace">Mono</option></select>
 <button class="sb" id="b-loadFont" onclick="$('f-font').click()"></button><input type="file" id="f-font" accept=".ttf,.otf,.woff,.woff2">
-<label id="lTxtSz"></label><input type="range" id="r-tsz" min="20" max="300" value="160" style="width:50px"><input type="number" id="n-tsz" min="20" max="300" value="160">
-<label id="lTxtTh"></label><input type="range" id="r-tth" min="20" max="200" value="60" style="width:40px"><input type="number" id="n-tth" min="20" max="200" value="60">
+<label id="lTxtSz"></label><input type="range" id="r-tsz" min="5" max="300" value="160" style="width:50px"><input type="number" id="n-tsz" min="5" max="300" value="160">
+<label id="lTxtTh"></label><input type="range" id="r-tth" min="5" max="200" value="60" style="width:40px"><input type="number" id="n-tth" min="5" max="200" value="60">
 <label id="lTxtCn"></label><input type="range" id="r-tcn" min="1" max="200" value="1" style="width:35px"><input type="number" id="n-tcn" min="1" max="200" value="1">
 <button class="sb" id="b-txtGo" onclick="textToEpi()"></button><span class="ht" id="hText">?</span></div></div>
 <div id="s-templ" class="sect"><div class="tpl">
@@ -325,7 +325,7 @@ var delMode=false;
 function tgDel(){delMode=!delMode;$('b-del').classList.toggle('on');$('b-del').innerHTML=delMode?T('b-delOn'):T('b-del');cv.style.cursor=delMode?'not-allowed':moveMode?'grab':'crosshair'}
 function delAtPoint(p){var best=-1,bestD=1e9;for(var i=0;i<layers.length;i++){var ly=layers[i];for(var ci=0;ci<ly.cons.length;ci++){var c=ly.cons[ci],d=Math.sqrt((p.x-c.ox-c.dx)*(p.x-c.ox-c.dx)+(p.y-c.oy-c.dy)*(p.y-c.oy-c.dy));if(d<bestD){bestD=d;best=i}}}if(best>=0&&bestD<150){pushUndo();layers.splice(best,1);if(!layers.length){appSt='idle';ov.classList.remove('h')}uSt()}}
 
-function sobel(ic,th){var iw=ic.width,ih=ic.height,id=ic.getContext('2d').getImageData(0,0,iw,ih).data;var g=new Float32Array(iw*ih);for(var i=0;i<iw*ih;i++)g[i]=.299*id[i*4]+.587*id[i*4+1]+.114*id[i*4+2];var b=new Float32Array(iw*ih);for(var y=1;y<ih-1;y++)for(var x=1;x<iw-1;x++){var s=0;for(var dy=-1;dy<=1;dy++)for(var dx=-1;dx<=1;dx++)s+=g[(y+dy)*iw+(x+dx)];b[y*iw+x]=s/9}var m=new Float32Array(iw*ih);for(var y=1;y<ih-1;y++)for(var x=1;x<iw-1;x++){var gx=-b[(y-1)*iw+(x-1)]+b[(y-1)*iw+(x+1)]-2*b[y*iw+(x-1)]+2*b[y*iw+(x+1)]-b[(y+1)*iw+(x-1)]+b[(y+1)*iw+(x+1)];var gy=-b[(y-1)*iw+(x-1)]-2*b[(y-1)*iw+x]-b[(y-1)*iw+(x+1)]+b[(y+1)*iw+(x-1)]+2*b[(y+1)*iw+x]+b[(y+1)*iw+(x+1)];m[y*iw+x]=Math.sqrt(gx*gx+gy*gy)}var e=[];for(var y=3;y<ih-3;y++)for(var x=3;x<iw-3;x++)if(m[y*iw+x]>th)e.push({x:x,y:y});return{edges:e,w:iw,h:ih}}
+function sobel(ic,th){var iw=ic.width,ih=ic.height,id=ic.getContext('2d').getImageData(0,0,iw,ih).data;var g=new Float32Array(iw*ih);for(var i=0;i<iw*ih;i++)g[i]=.299*id[i*4]+.587*id[i*4+1]+.114*id[i*4+2];var b=new Float32Array(iw*ih);for(var y=1;y<ih-1;y++)for(var x=1;x<iw-1;x++){var s=0;for(var dy=-1;dy<=1;dy++)for(var dx=-1;dx<=1;dx++)s+=g[(y+dy)*iw+(x+dx)];b[y*iw+x]=s/9}var m=new Float32Array(iw*ih);for(var y=1;y<ih-1;y++)for(var x=1;x<iw-1;x++){var gx=-b[(y-1)*iw+(x-1)]+b[(y-1)*iw+(x+1)]-2*b[y*iw+(x-1)]+2*b[y*iw+(x+1)]-b[(y+1)*iw+(x-1)]+b[(y+1)*iw+(x+1)];var gy=-b[(y-1)*iw+(x-1)]-2*b[(y-1)*iw+x]-b[(y-1)*iw+(x+1)]+b[(y+1)*iw+(x-1)]+2*b[(y+1)*iw+x]+b[(y+1)*iw+(x+1)];m[y*iw+x]=Math.sqrt(gx*gx+gy*gy)}var e=[];for(var y=1;y<ih-1;y++)for(var x=1;x<iw-1;x++)if(m[y*iw+x]>th)e.push({x:x,y:y});return{edges:e,w:iw,h:ih}}
 function boundary(ic,thr){var iw=ic.width,ih=ic.height,id=ic.getContext('2d').getImageData(0,0,iw,ih).data;var g=new Uint8Array(iw*ih);for(var i=0;i<iw*ih;i++)g[i]=(.299*id[i*4]+.587*id[i*4+1]+.114*id[i*4+2])>(thr||128)?1:0;var e=[];for(var y=3;y<ih-3;y++)for(var x=3;x<iw-3;x++){if(g[y*iw+x]===1){if(g[(y-1)*iw+x]===0||g[(y+1)*iw+x]===0||g[y*iw+x-1]===0||g[y*iw+x+1]===0)e.push({x:x,y:y})}}return{edges:e,w:iw,h:ih}}
 function thinEdges(edges,w,h){var map={};edges.forEach(function(e){map[e.x+','+e.y]=true});var out=[];edges.forEach(function(e){var x=e.x,y=e.y;var h0=map[(x-1)+','+y]&&map[(x+1)+','+y];var v0=map[x+','+(y-1)]&&map[x+','+(y+1)];var d1=map[(x-1)+','+(y-1)]&&map[(x+1)+','+(y+1)];var d2=map[(x+1)+','+(y-1)]&&map[(x-1)+','+(y+1)];var cnt=0;for(var dy=-1;dy<=1;dy++)for(var dx=-1;dx<=1;dx++){if(dx===0&&dy===0)continue;if(map[(x+dx)+','+(y+dy)])cnt++}if(cnt<=3||(!h0&&!v0&&!d1&&!d2))out.push(e)});return out}
 function trC(er,ms){var edges=er.edges,map={};edges.forEach(function(e){map[e.x+','+e.y]=true});var vis={},out=[];edges.forEach(function(s){if(vis[s.x+','+s.y])return;var path=[],cur=s,sk=0;while(true){var k=cur.x+','+cur.y;if(vis[k]){sk++;if(sk>3)break;continue}vis[k]=true;path.push({x:cur.x,y:cur.y});var best=null,bd=999;for(var dy=-5;dy<=5;dy++)for(var dx=-5;dx<=5;dx++){if(!dx&&!dy)continue;var nx=cur.x+dx,ny=cur.y+dy,nk=nx+','+ny;if(map[nk]&&!vis[nk]){var d=dx*dx+dy*dy;if(d<bd){bd=d;best={x:nx,y:ny}}}}if(!best)break;cur=best;sk=0}if(path.length>=ms)out.push(path)});out.sort(function(a,b){return b.length-a.length});return out}
@@ -338,17 +338,59 @@ function procImg(img) {
     oc.height = ih;
     var ctx = oc.getContext('2d');
     
-    ctx.filter = 'contrast(500%)';
+    ctx.filter = 'blur(0.5px)';
     ctx.drawImage(img, 0, 0, iw, ih);
     ctx.filter = 'none';
+    
+    thr = 30;
+    $('r-th').value = thr;
+    $('n-th').value = thr;
     
     lastImg = { canvas: oc, offX: (W - iw) / 2, offY: (H - ih) / 2, useBoundary: false };
     detEdge();
 }
 function detEdge() {
     if (!lastImg) return;
-    var er = lastImg.useBoundary ? boundary(lastImg.canvas, lastImg.bThr || 128) : sobel(lastImg.canvas, thr);
-    if (!lastImg.useBoundary) er.edges = thinEdges(er.edges, er.w, er.h);
+    
+    var cvs = lastImg.canvas;
+    var ctx = cvs.getContext('2d');
+    var w = cvs.width, h = cvs.height;
+    var imgData = ctx.getImageData(0, 0, w, h);
+    var d = imgData.data;
+    var edges = [];
+    
+    var threshold = parseInt(thr) || 30;
+    
+    for (var y = 3; y < h - 3; y++) {
+        for (var x = 3; x < w - 3; x++) {
+            var i = (y * w + x) * 4;
+            var r = d[i], g = d[i+1], b = d[i+2];
+            var iR = (y * w + x + 1) * 4;
+            var iB = ((y + 1) * w + x) * 4;
+            
+            var diffR = Math.max(Math.abs(r - d[iR]), Math.abs(r - d[iB]));
+            var diffG = Math.max(Math.abs(g - d[iR+1]), Math.abs(g - d[iB+1]));
+            var diffB = Math.max(Math.abs(b - d[iR+2]), Math.abs(b - d[iB+2]));
+            
+            if (Math.max(diffR, diffG, diffB) * 3 > threshold) {
+                edges.push({x: x, y: y});
+            }
+        }
+    }
+    
+    if (edges.length === 0) {
+        if (threshold <= 5) return;
+        thr = 30;
+        $('r-th').value = thr;
+        $('n-th').value = thr;
+        detEdge();
+        return;
+    }
+    
+    var er = { edges: edges, w: w, h: h };
+    if (typeof thinEdges !== 'undefined') {
+        er.edges = thinEdges(er.edges, w, h);
+    }
     var cs = trC(er, 8), mg = mergeC(cs, mxC);
     var cons = [];
     
@@ -357,7 +399,6 @@ function detEdge() {
         
         var dx = pts[0].x - pts[pts.length - 1].x;
         var dy = pts[0].y - pts[pts.length - 1].y;
-        
         if (dx * dx + dy * dy < 400) {
             var mVal = 1e9, mIdx = 0;
             for (var i = 0; i < pts.length; i++) {
