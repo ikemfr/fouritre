@@ -452,7 +452,25 @@ textarea { font-size: 14px; height: 40px; }
         // =====================================================
         // MAIN ANIMATION LOOP
         // =====================================================
+        // =====================================================
+        // MAIN ANIMATION LOOP
+        // =====================================================
         function loop() {
+            // Update reveal count and clear traces to prevent "jumping" lines when circle count increases
+            if (revealMode) {
+                var prevN = Math.floor(revealN);
+                if (revealN < mc) {
+                    revealN += 0.4; // Control reveal speed
+                    if (Math.floor(revealN) !== prevN) {
+                        // Reset all traces because changing the number of circles shifts the tip position
+                        layers.forEach(function(ly) {
+                            ly.cons.forEach(function(c) { c.tp = []; });
+                        });
+                        uSt();
+                    }
+                }
+            }
+
             var nC = revealMode ? Math.floor(revealN) : mc; cx.fillStyle = cBg; cx.fillRect(0, 0, W, H); drBg(); drMirAxis();
             layers.forEach(function (ly) { var cdx = ly.cons.length ? ly.cons[0].dx : 0, cdy = ly.cons.length ? ly.cons[0].dy : 0; ly.frozen.forEach(function (f) { drFz(f, cdx, cdy); if (fMirror) { var mps = f.map(function (p) { return mirrorPt(p.x + cdx, p.y + cdy) }); var mf = mps; mf.color = f.color; drFz(mf, 0, 0) } }) });
             if (appSt === 'drawing' && rp.length > 1) { cx.beginPath(); cx.moveTo(rp[0].x, rp[0].y); for (var i = 1; i < rp.length; i++)cx.lineTo(rp[i].x, rp[i].y); cx.strokeStyle = rA(cTr, .7); cx.lineWidth = lw; cx.lineCap = 'round'; cx.stroke(); cx.lineCap = 'butt' }
@@ -526,7 +544,6 @@ textarea { font-size: 14px; height: 40px; }
             requestAnimationFrame(loop);
         }
 
-
         // =====================================================
         // INPUT HANDLING: Mouse/touch, drag, delete mode
         // =====================================================
@@ -560,7 +577,32 @@ textarea { font-size: 14px; height: 40px; }
             if (dragging) { var ly = layers[dragging.layer]; var ndx = p.x - dragging.offX, ndy = p.y - dragging.offY; ly.cons.forEach(function (c) { c.dx = ndx; c.dy = ndy }); return }
             if (!dr) return; var pp = stblz(p), l = rp[rp.length - 1], dx = pp.x - l.x, dy = pp.y - l.y; if (dx * dx + dy * dy > 3) rp.push(pp)
         }
-        function oU(e) { e.preventDefault(); if (dragging) { dragging = null; cv.style.cursor = moveMode ? 'grab' : 'crosshair'; return } if (!dr) return; dr = false; if (rp.length > 10) { var s = smP(rp, sm); addLayer([bldC(s, cTr)]); rp = [] } else { rp = []; if (!layers.length) appSt = 'idle' } }
+        function oU(e) {
+            e.preventDefault();
+            if (dragging) { dragging = null; cv.style.cursor = moveMode ? 'grab' : 'crosshair'; return; }
+            if (!dr) return;
+            dr = false;
+            if (rp.length > 10) {
+                // Make round-trip for mouse drawn paths to avoid Gibbs phenomenon and forced straight lines
+                var pStart = rp[0];
+                var pEnd = rp[rp.length - 1];
+                var distSq = Math.pow(pStart.x - pEnd.x, 2) + Math.pow(pStart.y - pEnd.y, 2);
+                if (distSq > 100) {
+                    var rev = [];
+                    for (var k = rp.length - 2; k > 0; k--) {
+                        rev.push(rp[k]);
+                    }
+                    rp = rp.concat(rev);
+                }
+
+                var s = smP(rp, sm);
+                addLayer([bldC(s, cTr)]);
+                rp = [];
+            } else {
+                rp = [];
+                if (!layers.length) appSt = 'idle';
+            }
+        }
         cv.addEventListener('mousedown', oD); cv.addEventListener('mousemove', oM); cv.addEventListener('mouseup', oU); cv.addEventListener('mouseleave', function (e) { if (dr || dragging) oU(e) });
         cv.addEventListener('touchstart', function (e) { oD(e) }, { passive: false }); cv.addEventListener('touchmove', function (e) { oM(e) }, { passive: false }); cv.addEventListener('touchend', function (e) { oU(e) }, { passive: false });
         cv.addEventListener('contextmenu', function (e) { e.preventDefault() });
@@ -771,37 +813,42 @@ textarea { font-size: 14px; height: 40px; }
             var finalPaths = tracedContours.slice();
 
             while (finalPaths.length > mxC && finalPaths.length > 1) {
-                var i = 0; // Reference path (usually the longest or first)
-                var tail = finalPaths[i][finalPaths[i].length - 1];
-                var bestIdx = -1;
+                var bestI = -1, bestJ = -1;
                 var minDistSq = Infinity;
-                var reverseNext = false;
+                var reverseI = false, reverseJ = false;
 
-                // Find the segment whose start or end is closest to the current tail
-                for (var j = 1; j < finalPaths.length; j++) {
-                    var startPt = finalPaths[j][0];
-                    var endPt = finalPaths[j][finalPaths[j].length - 1];
+                // Find the two segments whose endpoints are closest across the entire set
+                for (var i = 0; i < finalPaths.length; i++) {
+                    var iHead = finalPaths[i][0];
+                    var iTail = finalPaths[i][finalPaths[i].length - 1];
+                    for (var j = i + 1; j < finalPaths.length; j++) {
+                        var jHead = finalPaths[j][0];
+                        var jTail = finalPaths[j][finalPaths[j].length - 1];
 
-                    var d2Start = Math.pow(tail.x - startPt.x, 2) + Math.pow(tail.y - startPt.y, 2);
-                    var d2End = Math.pow(tail.x - endPt.x, 2) + Math.pow(tail.y - endPt.y, 2);
+                        // Evaluate 4 possible connection points: Tail-Head, Tail-Tail, Head-Head, Head-Tail
+                        var dTH = Math.pow(iTail.x - jHead.x, 2) + Math.pow(iTail.y - jHead.y, 2);
+                        var dTT = Math.pow(iTail.x - jTail.x, 2) + Math.pow(iTail.y - jTail.y, 2);
+                        var dHH = Math.pow(iHead.x - jHead.x, 2) + Math.pow(iHead.y - jHead.y, 2);
+                        var dHT = Math.pow(iHead.x - jTail.x, 2) + Math.pow(iHead.y - jTail.y, 2);
 
-                    if (d2Start < minDistSq) {
-                        minDistSq = d2Start;
-                        bestIdx = j;
-                        reverseNext = false;
-                    }
-                    if (d2End < minDistSq) {
-                        minDistSq = d2End;
-                        bestIdx = j;
-                        reverseNext = true;
+                        var minD = Math.min(dTH, dTT, dHH, dHT);
+                        if (minD < minDistSq) {
+                            minDistSq = minD;
+                            bestI = i; bestJ = j;
+                            if (minD === dTH) { reverseI = false; reverseJ = false; }
+                            else if (minD === dTT) { reverseI = false; reverseJ = true; }
+                            else if (minD === dHH) { reverseI = true; reverseJ = false; }
+                            else { reverseI = true; reverseJ = true; }
+                        }
                     }
                 }
 
-                if (bestIdx !== -1) {
-                    // Join the segments
-                    var nextPath = finalPaths.splice(bestIdx, 1)[0];
-                    if (reverseNext) nextPath.reverse();
-                    finalPaths[i] = finalPaths[i].concat(nextPath);
+                if (bestI !== -1) {
+                    var pathI = finalPaths[bestI];
+                    var pathJ = finalPaths.splice(bestJ, 1)[0];
+                    if (reverseI) pathI.reverse();
+                    if (reverseJ) pathJ.reverse();
+                    finalPaths[bestI] = pathI.concat(pathJ);
                 }
             }
 
@@ -831,20 +878,33 @@ textarea { font-size: 14px; height: 40px; }
                 var pEnd = pts[pts.length - 1];
                 var distSq = Math.pow(pStart.x - pEnd.x, 2) + Math.pow(pStart.y - pEnd.y, 2);
 
+                // Convert open paths to round-trips to avoid Gibbs phenomenon artifacts
                 if (distSq > 100) {
                     var rev = [];
                     for (var k = pts.length - 2; k > 0; k--) {
                         rev.push(pts[k]);
                     }
                     pts = pts.concat(rev);
+                } else {
+                    // For naturally closed paths, shift starting point to top-left to normalize drawing start
+                    var mVal = 1e9, mIdx = 0;
+                    for (var i = 0; i < pts.length; i++) {
+                        var v = pts[i].x + pts[i].y;
+                        if (v < mVal) { mVal = v; mIdx = i; }
+                    }
+                    pts = pts.slice(mIdx).concat(pts.slice(0, mIdx));
                 }
 
-                var mVal = 1e9, mIdx = 0;
-                for (var i = 0; i < pts.length; i++) {
-                    var v = pts[i].x + pts[i].y;
-                    if (v < mVal) { mVal = v; mIdx = i; }
+                // Shift starting point to top-left ONLY if the path was already closed.
+                // This prevents breaking the drawing order of open paths.
+                if (distSq <= 100) {
+                    var mVal = 1e9, mIdx = 0;
+                    for (var i = 0; i < pts.length; i++) {
+                        var v = pts[i].x + pts[i].y;
+                        if (v < mVal) { mVal = v; mIdx = i; }
+                    }
+                    pts = pts.slice(mIdx).concat(pts.slice(0, mIdx));
                 }
-                pts = pts.slice(mIdx).concat(pts.slice(0, mIdx));
 
                 var maxPts = Math.min(pts.length, 1000);
                 var s = smP(resamp(pts, maxPts), 2);
