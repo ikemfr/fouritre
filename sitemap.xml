@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://fouritre.vercel.app/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>1.0</priority>
+    <image:image><image:loc>https://fouritre.vercel.app/assets/screenshot-app.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://fouritre.vercel.app/guide/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://fouritre.vercel.app/assets/screenshot-mobile.jpg</image:loc></image:image>
+  </url>
+</urlset>
