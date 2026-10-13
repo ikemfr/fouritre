@@ -13,11 +13,11 @@ SITE = 'https://fouritre.vercel.app'
 UPDATED = '2026-10-13'
 
 LANGS = [  # code, path, hreflang, label
-    ('ja', '/guide/', 'ja', '日本語'),
     ('en', '/guide/en/', 'en', 'English'),
     ('es', '/guide/es/', 'es', 'Español'),
     ('pt', '/guide/pt/', 'pt', 'Português'),
     ('zh', '/guide/zh/', 'zh-Hans', '中文'),
+    ('ja', '/guide/', 'ja', '日本語'),
 ]
 
 
