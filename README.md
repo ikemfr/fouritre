@@ -1,10 +1,10 @@
 # FouriTre (フーリトレ)
 
-**[🔗 URL](https://fouritre.vercel.app/)**
+**[🔗 アプリを開く](https://fouritre.vercel.app/)** ・ **[📖 使い方ガイド](https://fouritre.vercel.app/guide/)**
 
 FouriTreは、描いた線やインポートした画像を「フーリエ変換」し、回転する円（エピサイクル）の連鎖で再現するインタラクティブ数学ビジュアライザです。
 
-![FouriTre メイン画面](./image.jpg)
+![FouriTre メイン画面](./assets/screenshot-app.jpg)
 
 ## 🚀 特徴
 
