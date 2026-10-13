@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cómo usar FouriTre | Dibuja con epiciclos y la transformada de Fourier</title>
+<meta name="description" content="Guía de FouriTre, una herramienta web gratuita que convierte tus dibujos, imágenes y textos en círculos giratorios (epiciclos) mediante la transformada de Fourier. Aprende a dibujar, importar imágenes, convertir texto, aplicar efectos, exportar vídeo y cómo funciona la transformada discreta de Fourier.">
+<link rel="canonical" href="https://fouritre.vercel.app/guide/es/">
+<link rel="alternate" hreflang="ja" href="https://fouritre.vercel.app/guide/">
+<link rel="alternate" hreflang="en" href="https://fouritre.vercel.app/guide/en/">
+<link rel="alternate" hreflang="es" href="https://fouritre.vercel.app/guide/es/">
+<link rel="alternate" hreflang="pt" href="https://fouritre.vercel.app/guide/pt/">
+<link rel="alternate" hreflang="zh-Hans" href="https://fouritre.vercel.app/guide/zh/">
+<link rel="alternate" hreflang="x-default" href="https://fouritre.vercel.app/guide/en/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#05070d">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FouriTre">
+<meta property="og:locale" content="es_ES">
+<meta property="og:url" content="https://fouritre.vercel.app/guide/es/">
+<meta property="og:title" content="Guía de FouriTre | Dibujo con epiciclos y transformada de Fourier">
+<meta property="og:description" content="Cómo usar FouriTre, la herramienta web gratuita que redibuja tus trazos con círculos que giran, y cómo funciona la transformada de Fourier que hay detrás.">
+<meta property="og:image" content="https://fouritre.vercel.app/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía de FouriTre | Dibujo con epiciclos y transformada de Fourier">
+<meta name="twitter:description" content="Cómo usar FouriTre, la herramienta web gratuita que redibuja tus trazos con círculos que giran, y cómo funciona la transformada de Fourier que hay detrás.">
+<meta name="twitter:image" content="https://fouritre.vercel.app/assets/og.jpg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23060a14'/><circle cx='50' cy='50' r='35' fill='none' stroke='%233d8bfd' stroke-width='3'/><circle cx='50' cy='15' r='5' fill='%23fcd34d'/></svg>">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "@id": "https://fouritre.vercel.app/guide/es/#article",
+      "headline": "Cómo usar FouriTre",
+      "description": "Guía de FouriTre, una herramienta web gratuita que convierte tus dibujos, imágenes y textos en círculos giratorios (epiciclos) mediante la transformada de Fourier. Aprende a dibujar, importar imágenes, convertir texto, aplicar efectos, exportar vídeo y cómo funciona la transformada discreta de Fourier.",
+      "inLanguage": "es",
+      "image": "https://fouritre.vercel.app/assets/og.jpg",
+      "author": {
+        "@type": "Person",
+        "name": "Ike mfr"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Ike mfr"
+      },
+      "dateModified": "2026-10-13",
+      "mainEntityOfPage": "https://fouritre.vercel.app/guide/es/",
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "Transformada de Fourier"
+        },
+        {
+          "@type": "Thing",
+          "name": "Transformada discreta de Fourier"
+        },
+        {
+          "@type": "Thing",
+          "name": "Epiciclos"
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "FouriTre",
+          "item": "https://fouritre.vercel.app/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guía",
+          "item": "https://fouritre.vercel.app/guide/es/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿FouriTre es gratis?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. No hace falta registrarse ni instalar nada: basta con abrirlo en el navegador."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Se suben mis dibujos o imágenes a un servidor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. La transformada de Fourier y la detección de bordes se calculan por completo en tu navegador, y tus dibujos e imágenes nunca se envían a un servidor."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué cambia si añado más círculos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El número de círculos es el número de componentes de frecuencia. Con pocos, la forma queda redondeada y borrosa; con más, las esquinas y los detalles se ajustan al trazo original. Puedes usar hasta 2000."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Funciona en el móvil?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. Dibuja en el lienzo con el dedo y abre el panel de ajustes con el botón de arriba a la derecha."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Puedo guardar mi animación?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Desde el menú Exportar puedes guardar imágenes PNG, PNG transparente y JPEG, vídeo WebM y un proyecto JSON que podrás volver a editar."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="/guide/guide.css">
+</head>
+<body>
+<nav class="nav"><div class="in">
+  <a class="brand" href="/?lang=es"><span class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#3b4a7a" stroke-width="1.4"/><line x1="12" y1="12" x2="17.5" y2="6.5" stroke="#6d8cff" stroke-width="1.6" stroke-linecap="round"/><circle cx="17.5" cy="6.5" r="2.2" fill="#fcd34d"/></svg></span>FouriTre</a>
+  <a class="lk" href="#quickstart">Primeros pasos</a>
+  <a class="lk" href="#math">Cómo funciona</a>
+  <a class="lk" href="#faq">FAQ</a>
+  <a class="cta" href="/?lang=es">Abrir la app</a>
+</div></nav>
+
+<header class="hero">
+  <div>
+    <div class="eyebrow">Cómo usar FouriTre</div>
+    <h1><span>Redibuja cualquier trazo<br>con círculos que giran.</span></h1>
+    <p class="lead"><b>FouriTre</b> toma un trazo a mano alzada, una imagen o un texto, le aplica la <b>transformada de Fourier</b> y lo vuelve a dibujar encadenando muchos círculos giratorios llamados <b>epiciclos</b>. Esta guía explica cómo usarlo y las matemáticas que hay detrás.</p>
+    <a class="cta lg" href="/?lang=es">Empezar a dibujar →</a>
+    <div class="badges"><span>Gratis</span><span>Sin registro ni instalación</span><span>PC / móvil / tableta</span><span>5 idiomas</span></div>
+    <div class="langs"><a href="/guide/" hreflang="ja" lang="ja">日本語</a><a href="/guide/en/" hreflang="en" lang="en">English</a><a href="/guide/es/" hreflang="es" lang="es" aria-current="page">Español</a><a href="/guide/pt/" hreflang="pt" lang="pt">Português</a><a href="/guide/zh/" hreflang="zh-Hans" lang="zh-Hans">中文</a></div>
+  </div>
+  <img src="/assets/screenshot-app-es.jpg" width="1400" height="860" alt="FouriTre redibujando con epiciclos de colores los contornos extraídos de un retrato de Fourier" fetchpriority="high">
+</header>
+
+<div class="wrap">
+  <aside class="toc">
+    <p>Contenido</p>
+    <a href="#what">Qué es FouriTre</a>
+    <a href="#quickstart">Empieza en 3 pasos</a>
+    <a href="#modes">Cuatro modos de entrada</a>
+    <a href="#settings">Ajustes de los epiciclos</a>
+    <a href="#effects">Efectos</a>
+    <a href="#edit">Edición</a>
+    <a href="#export">Guardar y exportar</a>
+    <a href="#mobile">En el móvil</a>
+    <a href="#math">Cómo funciona la transformada de Fourier</a>
+    <a href="#faq">Preguntas frecuentes</a>
+  </aside>
+  <main>
+    <section id="what">
+      <h2><small>About</small>¿Qué es FouriTre?</h2>
+      <p>Cualquier curva cerrada puede describirse como la trayectoria de la punta de una cadena de círculos que giran a distintas velocidades. Esa es la idea de las <b>series de Fourier</b>, y FouriTre es un visualizador que te permite verla y experimentar con ella.</p>
+      <p>Cuando dibujas un trazo en el lienzo, se descompone en componentes de frecuencia con la <b>transformada discreta de Fourier (DFT)</b>. Cada componente se convierte en un círculo; al unirlos de mayor a menor, la punta vuelve a recorrer tu trazo. Con pocos círculos la forma queda redondeada y borrosa; con más, aparecen todos los detalles, en tiempo real.</p>
+      <p>Sirve como material para clases de matemáticas, para entender la transformada de Fourier de forma intuitiva o simplemente para crear animaciones hipnóticas.</p>
+    </section>
+
+    <section id="quickstart">
+      <h2><small>Quick start</small>Empieza en 3 pasos</h2>
+      <ol class="steps">
+        <li><b>Abre la app</b><br>Abre <a href="/?lang=es">fouritre.vercel.app</a> en el navegador. Empiezas en el modo Dibujar.</li>
+        <li><b>Dibuja un solo trazo</b><br>Arrastra con el ratón o el dedo y suelta. Aparece una cadena de círculos que redibuja tu trazo.</li>
+        <li><b>Ajusta los círculos y la velocidad</b><br>En el panel de la derecha (en el móvil, el botón de ajustes arriba a la derecha) cambia «Círculos» y «Tiempo de dibujo». Cuando te guste, usa «Exportar» para guardar una imagen o un vídeo.</li>
+      </ol>
+      <div class="note">Consejo: ¿no te apetece dibujar? Elige un corazón o una estrella en la pestaña Plantillas o pulsa «Aleatorio» en la parte inferior.</div>
+    </section>
+
+    <section id="modes">
+      <h2><small>Input modes</small>Cuatro modos de entrada</h2>
+      <p>Con las pestañas de la parte superior del panel eliges qué convertir en epiciclos.</p>
+      <div class="cards">
+        <div class="card"><h3>Dibujar</h3><p>Dibuja libremente con el ratón o el dedo. El «Estabilizador» reduce el temblor de la mano y el «Suavizado» alisa el trazo terminado.</p></div>
+        <div class="card"><h3>Imagen</h3><p>Carga una foto o ilustración; se detectan los bordes y se convierten en varias líneas. El «Umbral» fija la sensibilidad y «Contornos», cuántas líneas se usan.</p></div>
+        <div class="card"><h3>Texto</h3><p>Dibuja el contorno de letras o emojis. Admite varias líneas y puedes cargar tu propia fuente (TTF / OTF / WOFF).</p></div>
+        <div class="card"><h3>Plantillas</h3><p>Con un clic: estrella, corazón, infinito, π, mariposa, onda cuadrada, gato, espiral, ADN o un retrato de Fourier.</p></div>
+      </div>
+      <h3>Consejos para convertir imágenes</h3>
+      <ul>
+        <li>Las imágenes con fondo liso y contornos nítidos dan los resultados más estables.</li>
+        <li>Si salen demasiadas líneas, sube el «Umbral» o baja «Contornos».</li>
+        <li>Tras cambiar los ajustes, pulsa «Volver a detectar» para procesar la misma imagen. «Monocromo» dibuja todos los trazos de un solo color.</li>
+      </ul>
+      <h3>No importa si el trazo no se cierra</h3>
+      <p>Una serie de Fourier supone una forma que vuelve a su punto de partida, así que transformar un trazo abierto tal cual uniría sus extremos con una recta y provocaría ondulaciones (el fenómeno de Gibbs). FouriTre calcula internamente los trazos abiertos como un camino de ida y vuelta y deja de dibujar en el punto final, de modo que tu trazo abierto se reproduce tal como lo dibujaste.</p>
+    </section>
+
+    <section id="settings">
+      <h2><small>Settings</small>Ajustes de los epiciclos</h2>
+      <table>
+        <tr><th>Círculos (1–2000)</th><td>El número de componentes de frecuencia. Menos da una forma más simple y redonda; más sigue fielmente el trazo original. Al cambiarlo, el dibujo se reinicia.</td></tr>
+        <tr><th>Tiempo de dibujo (0,5–60 s)</th><td>Los segundos que tarda una vuelta completa. Va a la misma velocidad en pantallas de 60 Hz y de 120 Hz.</td></tr>
+        <tr><th>Grosor (0,5–16)</th><td>El grosor del trazo.</td></tr>
+        <tr><th>Colores</th><td>Cambia el color del trazo, los círculos, el fondo y la rejilla. El fondo puede ser «Rejilla», «Puntos» o «Ninguno», y el control deslizante de al lado ajusta la separación.</td></tr>
+      </table>
+    </section>
+
+    <section id="effects">
+      <h2><small>Effects</small>Efectos</h2>
+      <table>
+        <tr><th>Arcoíris</th><td>Dibuja el trazo con un degradado de arcoíris.</td></tr>
+        <tr><th>Persistir</th><td>Mantiene en pantalla los trazos terminados. Si lo desactivas, la misma forma se dibuja una y otra vez.</td></tr>
+        <tr><th>Revelar</th><td>Empieza con un círculo y añade más poco a poco para que veas cómo la forma se acerca a tu trazo. Ideal para sentir cómo converge una serie de Fourier.</td></tr>
+        <tr><th>Espejo</th><td>Dibuja también el reflejo respecto a un eje. Puedes ajustar el ángulo y la posición del eje y mostrarlo u ocultarlo.</td></tr>
+        <tr><th>Destellos</th><td>Saltan partículas de luz desde la punta del lápiz.</td></tr>
+        <tr><th>Sincronizar</th><td>Con varios contornos, hace que todos terminen a la vez. Desactivado, los contornos pequeños terminan antes.</td></tr>
+      </table>
+    </section>
+
+    <section id="edit">
+      <h2><small>Editing</small>Edición</h2>
+      <ul>
+        <li><b>Mover</b>: actívalo y arrastra cerca de una figura para moverla.</li>
+        <li><b>Copiar / Pegar</b>: pulsa «Copiar» y haz clic en una figura para copiarla; «Pegar» coloca un duplicado ligeramente desplazado. La miniatura del encabezado muestra lo que hay en el portapapeles.</li>
+        <li><b>Borrar</b>: actívalo y haz clic para borrar la figura más cercana. «Borrar todo» lo elimina todo.</li>
+        <li><b>Deshacer / Rehacer</b>: hasta 30 pasos de historial.</li>
+      </ul>
+      <h3>Atajos de teclado</h3>
+      <table>
+        <tr><th><kbd>Ctrl</kbd> + <kbd>Z</kbd></th><td>Deshacer</td></tr>
+        <tr><th><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd> / <kbd>Ctrl</kbd> + <kbd>Y</kbd></th><td>Rehacer</td></tr>
+        <tr><th><kbd>Ctrl</kbd> + <kbd>C</kbd> / <kbd>Ctrl</kbd> + <kbd>V</kbd></th><td>Copiar / pegar la figura bajo el cursor</td></tr>
+      </table>
+      <p>En Mac usa <kbd>⌘</kbd> en lugar de <kbd>Ctrl</kbd>. Mientras escribes en un campo de texto, estas teclas copian y pegan texto como siempre.</p>
+    </section>
+
+    <section id="export">
+      <h2><small>Export</small>Guardar y exportar</h2>
+      <p>Con «Exportar» en el encabezado puedes guardar con el nombre de archivo que quieras.</p>
+      <ul>
+        <li><b>PNG / JPEG</b>: guarda el lienzo actual como imagen.</li>
+        <li><b>PNG (transparente)</b>: imagen con fondo transparente, útil para edición de vídeo y diseño.</li>
+        <li><b>Vídeo WebM</b>: graba la animación de principio a fin.</li>
+        <li><b>Proyecto JSON</b>: guarda tus trazos y ajustes. Ábrelo luego con «Abrir» en la parte inferior para seguir editando.</li>
+      </ul>
+    </section>
+
+    <section id="mobile">
+      <h2><small>Mobile</small>En el móvil y la tableta</h2>
+      <div class="mob">
+        <div>
+          <p>En el móvil, el panel de ajustes se oculta para que el lienzo ocupe toda la pantalla. Toca el <b>botón de ajustes arriba a la derecha</b> y el panel sube desde abajo. Al tocar el lienzo se cierra solo, así puedes empezar a dibujar enseguida.</p>
+          <p>Desliza un dedo para dibujar. Para trazos finos, lo mejor es una tableta con lápiz óptico.</p>
+        </div>
+        <img src="/assets/screenshot-mobile-es.jpg" width="780" height="1600" alt="FouriTre en un smartphone con el panel de ajustes abierto" loading="lazy">
+      </div>
+    </section>
+
+    <section id="math">
+      <h2><small>Math</small>Cómo funciona la transformada de Fourier</h2>
+      <h3>1. Convertir el trazo en una serie de números complejos</h3>
+      <p>El trazo se vuelve a muestrear en N puntos equidistantes. Si cada punto (x, y) se trata como el número complejo <b>z = x + iy</b>, el trazo se convierte en la sucesión z[0], z[1], …, z[N−1].</p>
+      <h3>2. Descomponerlo en frecuencias con la transformada discreta de Fourier</h3>
+      <div class="fm">X[k] = (1/N) · Σ<sub>n=0..N−1</sub> z[n] · e<sup>−i2πkn/N</sup></div>
+      <p>Cada X[k] resultante corresponde a un círculo, definido por tres propiedades:</p>
+      <table>
+        <tr><th>Amplitud |X[k]|</th><td>El radio del círculo</td></tr>
+        <tr><th>Frecuencia k</th><td>Cuántas vueltas da por ciclo (si es negativa, gira al revés)</td></tr>
+        <tr><th>Fase arg X[k]</th><td>El ángulo desde el que empieza</td></tr>
+      </table>
+      <h3>3. Encadenar los círculos para redibujar el trazo</h3>
+      <div class="fm">z(t) = Σ<sub>k</sub> X[k] · e<sup>ikt</sup>　(0 ≤ t &lt; 2π)</div>
+      <p>Coloca el centro de cada círculo en la punta del anterior, del radio mayor al menor, y la punta del último dibuja z(t). Esos son los <b>epiciclos</b>. Los componentes grandes son los que más influyen en la forma, así que con unos pocos círculos ya aparece la silueta y con más se añaden los detalles. La <b>compresión JPEG</b> se basa en la misma idea de descartar los componentes de frecuencia menos importantes.</p>
+      <div class="note">Los epiciclos se usaron por primera vez en la astronomía de la antigua Grecia para explicar el movimiento de los planetas. Desde el punto de vista de las series de Fourier, con suficientes círculos se puede describir cualquier trayectoria periódica.</div>
+    </section>
+
+    <section id="faq">
+      <h2><small>FAQ</small>Preguntas frecuentes</h2>
+      <details open><summary>¿FouriTre es gratis?</summary><p>Sí. No hace falta registrarse ni instalar nada: basta con abrirlo en el navegador.</p></details>
+      <details><summary>¿Se suben mis dibujos o imágenes a un servidor?</summary><p>No. La transformada de Fourier y la detección de bordes se calculan por completo en tu navegador, y tus dibujos e imágenes nunca se envían a un servidor.</p></details>
+      <details><summary>¿Qué cambia si añado más círculos?</summary><p>El número de círculos es el número de componentes de frecuencia. Con pocos, la forma queda redondeada y borrosa; con más, las esquinas y los detalles se ajustan al trazo original. Puedes usar hasta 2000.</p></details>
+      <details><summary>¿Funciona en el móvil?</summary><p>Sí. Dibuja en el lienzo con el dedo y abre el panel de ajustes con el botón de arriba a la derecha.</p></details>
+      <details><summary>¿Puedo guardar mi animación?</summary><p>Desde el menú Exportar puedes guardar imágenes PNG, PNG transparente y JPEG, vídeo WebM y un proyecto JSON que podrás volver a editar.</p></details>
+    </section>
+
+    <div class="end">
+      <h2>Pruébalo ahora</h2>
+      <p>Un solo trazo basta para entender la transformada de Fourier.</p>
+      <a class="cta lg" href="/?lang=es">Abrir FouriTre →</a>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="langs"><a href="/guide/" hreflang="ja" lang="ja">日本語</a><a href="/guide/en/" hreflang="en" lang="en">English</a><a href="/guide/es/" hreflang="es" lang="es" aria-current="page">Español</a><a href="/guide/pt/" hreflang="pt" lang="pt">Português</a><a href="/guide/zh/" hreflang="zh-Hans" lang="zh-Hans">中文</a></div>
+  <p>&copy; Ike mfr ・ <a href="/?lang=es">FouriTre</a> ・ <a href="https://buymeacoffee.com/ike_mfr">Buy Me a Coffee</a></p>
+</footer>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
