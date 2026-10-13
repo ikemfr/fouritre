@@ -106,6 +106,7 @@ TEMPLATE = '''<!DOCTYPE html>
       <ol class="steps">
 {qs_steps}
       </ol>
+      {demo_qs}
       <div class="note">{qs_note}</div>
     </section>
 
@@ -115,6 +116,7 @@ TEMPLATE = '''<!DOCTYPE html>
       <div class="cards">
 {modes_cards}
       </div>
+      <div class="demo2">{demo_img}{demo_text}</div>
       <h3>{img_tips_h}</h3>
       <ul>
 {img_tips}
@@ -132,6 +134,7 @@ TEMPLATE = '''<!DOCTYPE html>
 
     <section id="effects">
       <h2><small>Effects</small>{effects_h}</h2>
+      {demo_fx}
       <table>
 {effects}
       </table>
@@ -180,6 +183,7 @@ TEMPLATE = '''<!DOCTYPE html>
       <h3>{m3_h}</h3>
       <div class="fm">z(t) = Σ<sub>k</sub> X[k] · e<sup>ikt</sup>　(0 ≤ t &lt; 2π)</div>
       <p>{m3}</p>
+      {demo_conv}
       <div class="note">{m3_note}</div>
     </section>
 
@@ -200,10 +204,38 @@ TEMPLATE = '''<!DOCTYPE html>
   {langs}
   <p>&copy; Ike mfr ・ <a href="{app}">FouriTre</a> ・ <a href="https://buymeacoffee.com/ike_mfr">Buy Me a Coffee</a></p>
 </footer>
+{demo_js}
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
 '''
+
+DEMO_SIZE = {'quickstart': (960, 560), 'image': (720, 528), 'text': (720, 528), 'effects': (720, 528), 'converge': (720, 528)}
+
+
+def demo(name, caption, src=None):
+    w, h = DEMO_SIZE[name]
+    src = src or name
+    return (f'<figure class="demo"><video src="/assets/demo/{src}.mp4" poster="/assets/demo/{src}.jpg" '
+            f'width="{w}" height="{h}" muted loop playsinline preload="none" aria-label="{caption}"></video>'
+            f'<figcaption>{caption}</figcaption></figure>')
+
+
+# Play demo videos only while visible; respect reduced motion.
+DEMO_JS = """<script>
+(function () {
+  var vids = document.querySelectorAll('.demo video');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    vids.forEach(function (v) { v.controls = true; v.preload = 'metadata'; });
+    return;
+  }
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.play().catch(function () {}); } else { e.target.pause(); } });
+  }, { threshold: 0.35 });
+  vids.forEach(function (v) { io.observe(v); });
+})();
+</script>"""
+
 
 TOC_IDS = ['what', 'quickstart', 'modes', 'settings', 'effects', 'edit', 'export', 'mobile', 'math', 'faq']
 
@@ -266,6 +298,9 @@ def build(code, t):
         img_tips=lis(t['img_tips']), settings=rows(t['settings']), effects=rows(t['effects']),
         edit=lis(t['edit']), keys=rows(t['keys']), export=lis(t['export']),
         mobile=paras(t['mobile'], 10), m2_table=rows(t['m2_table']), faq_html=faq_html,
+        demo_qs=demo('quickstart', t['cap_qs'], 'quickstart-' + code), demo_img=demo('image', t['cap_img']),
+        demo_text=demo('text', t['cap_text']), demo_fx=demo('effects', t['cap_fx']), demo_conv=demo('converge', t['cap_conv']),
+        demo_js=DEMO_JS,
     )
     html = TEMPLATE.format(**v)
     out = os.path.join(ROOT, path.strip('/'), 'index.html')
@@ -282,6 +317,7 @@ KBD_CP = '<kbd>Ctrl</kbd> + <kbd>C</kbd> / <kbd>Ctrl</kbd> + <kbd>V</kbd>'
 T = {}
 
 T['en'] = dict(
+    cap_qs='Draw one stroke and the chain of circles redraws it. Lower “Circles” and the shape gets rounder.', cap_img='Contours extracted from an image, drawn with epicycles (the “Fourier” preset).', cap_text='The text “Fourier ♥” turned into outlines.', cap_fx='Mirror + Rainbow + Sparkle.', cap_conv='The more circles (n), the closer the shape gets to the original cat.',
     oglocale='en_US',
     title='How to Use FouriTre | Draw with Fourier Transform Epicycles',
     description='Learn how to use FouriTre, a free web tool that turns your drawings, images and text into rotating circles (epicycles) using the Fourier transform. Covers drawing, image import, text, effects, video export and how the discrete Fourier transform works.',
@@ -386,6 +422,7 @@ T['en'] = dict(
 )
 
 T['es'] = dict(
+    cap_qs='Dibuja un trazo y la cadena de círculos lo redibuja. Al bajar «Círculos», la forma se redondea.', cap_img='Contornos extraídos de una imagen y dibujados con epiciclos (plantilla «Fourier»).', cap_text='El texto «Fourier ♥» convertido en contornos.', cap_fx='Espejo + Arcoíris + Destellos.', cap_conv='Cuantos más círculos (n), más se parece la forma al gato original.',
     oglocale='es_ES',
     title='Cómo usar FouriTre | Dibuja con epiciclos y la transformada de Fourier',
     description='Guía de FouriTre, una herramienta web gratuita que convierte tus dibujos, imágenes y textos en círculos giratorios (epiciclos) mediante la transformada de Fourier. Aprende a dibujar, importar imágenes, convertir texto, aplicar efectos, exportar vídeo y cómo funciona la transformada discreta de Fourier.',
@@ -490,6 +527,7 @@ T['es'] = dict(
 )
 
 T['pt'] = dict(
+    cap_qs='Desenhe um traço e a corrente de círculos o redesenha. Ao diminuir “Círculos”, a forma fica arredondada.', cap_img='Contornos extraídos de uma imagem, desenhados com epiciclos (modelo “Fourier”).', cap_text='O texto “Fourier ♥” convertido em contornos.', cap_fx='Espelho + Arco-íris + Brilhos.', cap_conv='Quanto mais círculos (n), mais a forma se aproxima do gato original.',
     oglocale='pt_BR',
     title='Como usar o FouriTre | Desenhe com epiciclos e a transformada de Fourier',
     description='Guia do FouriTre, uma ferramenta web gratuita que transforma seus desenhos, imagens e textos em círculos giratórios (epiciclos) usando a transformada de Fourier. Aprenda a desenhar, importar imagens, converter texto, aplicar efeitos, exportar vídeo e como funciona a transformada discreta de Fourier.',
@@ -594,6 +632,7 @@ T['pt'] = dict(
 )
 
 T['zh'] = dict(
+    cap_qs='一笔画出线条，旋转的圆就会把它重新画出来。减少“圆的数量”，形状会变圆。', cap_img='从图片中提取轮廓，再用本轮画出来（“傅里叶”模板）。', cap_text='把文字“Fourier ♥”转换成轮廓。', cap_fx='镜像 + 彩虹 + 闪光。', cap_conv='圆的数量 n 越多，形状越接近原来的猫。',
     oglocale='zh_CN',
     title='FouriTre 使用指南 | 用傅里叶变换和本轮（周转圆）画画',
     description='FouriTre 是一款免费的网页工具，用傅里叶变换把手绘线条、图片和文字变成一串旋转的圆（本轮）重新画出来。本指南介绍绘制、导入图片、文字转换、效果、视频导出等操作，以及离散傅里叶变换（DFT）的原理。',
