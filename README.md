@@ -1,10 +1,10 @@
 # FouriTre (フーリトレ)
 
-**[🔗 URL](https://fouritre.vercel.app/)**
+**[🔗 アプリを開く](https://fouritre.vercel.app/)** ・ **[📖 使い方ガイド](https://fouritre.vercel.app/guide/)**
 
 FouriTreは、描いた線やインポートした画像を「フーリエ変換」し、回転する円（エピサイクル）の連鎖で再現するインタラクティブ数学ビジュアライザです。
 
-![FouriTre メイン画面](./image.jpg)
+![FouriTre メイン画面](./assets/screenshot-app.jpg)
 
 ## 🚀 特徴
 
@@ -27,7 +27,12 @@ FouriTreは、描いた線やインポートした画像を「フーリエ変換
 - タッチ操作に最適化されたUI。
 - 画面幅に合わせたレスポンシブなコントロールパネル。削除などの重要ボタンも隠れず、快適に操作できます。
 
-### 5. エクスポート
+### 5. 多言語対応
+- 日本語・English・Español・Português・中文（簡体字）の5言語。
+- ブラウザの言語設定から自動で選択し、ヘッダーのメニューで切り替えられます（`?lang=es` のようにURLでも指定可能）。
+- 使い方ガイドも5言語あります（`/guide/`、`/guide/en/`、`/guide/es/`、`/guide/pt/`、`/guide/zh/`）。日本語版以外は `python3 tools/build_guides.py` で生成します。
+
+### 6. エクスポート
 - 画像（PNG / 背景透過PNG / JPEG）
 - 動画（WebM形式）
 - プロジェクト保存（JSON形式）

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://fouritre.vercel.app/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>1.0</priority>
+    <image:image><image:loc>https://fouritre.vercel.app/assets/screenshot-app.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://fouritre.vercel.app/guide/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://fouritre.vercel.app/guide/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fouritre.vercel.app/guide/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fouritre.vercel.app/guide/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://fouritre.vercel.app/guide/pt/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://fouritre.vercel.app/guide/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fouritre.vercel.app/guide/en/"/>
+    <image:image><image:loc>https://fouritre.vercel.app/assets/screenshot-app.jpg</image:loc></image:image>
+    <image:image><image:loc>https://fouritre.vercel.app/assets/screenshot-mobile.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://fouritre.vercel.app/guide/en/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://fouritre.vercel.app/guide/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fouritre.vercel.app/guide/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fouritre.vercel.app/guide/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://fouritre.vercel.app/guide/pt/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://fouritre.vercel.app/guide/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fouritre.vercel.app/guide/en/"/>
+    <image:image><image:loc>https://fouritre.vercel.app/assets/screenshot-app-en.jpg</image:loc></image:image>
+    <image:image><image:loc>https://fouritre.vercel.app/assets/screenshot-mobile-en.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://fouritre.vercel.app/guide/es/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://fouritre.vercel.app/guide/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fouritre.vercel.app/guide/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fouritre.vercel.app/guide/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://fouritre.vercel.app/guide/pt/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://fouritre.vercel.app/guide/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fouritre.vercel.app/guide/en/"/>
+    <image:image><image:loc>https://fouritre.vercel.app/assets/screenshot-app-es.jpg</image:loc></image:image>
+    <image:image><image:loc>https://fouritre.vercel.app/assets/screenshot-mobile-es.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://fouritre.vercel.app/guide/pt/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://fouritre.vercel.app/guide/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fouritre.vercel.app/guide/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fouritre.vercel.app/guide/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://fouritre.vercel.app/guide/pt/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://fouritre.vercel.app/guide/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fouritre.vercel.app/guide/en/"/>
+    <image:image><image:loc>https://fouritre.vercel.app/assets/screenshot-app-pt.jpg</image:loc></image:image>
+    <image:image><image:loc>https://fouritre.vercel.app/assets/screenshot-mobile-pt.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://fouritre.vercel.app/guide/zh/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://fouritre.vercel.app/guide/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fouritre.vercel.app/guide/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fouritre.vercel.app/guide/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://fouritre.vercel.app/guide/pt/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://fouritre.vercel.app/guide/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fouritre.vercel.app/guide/en/"/>
+    <image:image><image:loc>https://fouritre.vercel.app/assets/screenshot-app-zh.jpg</image:loc></image:image>
+    <image:image><image:loc>https://fouritre.vercel.app/assets/screenshot-mobile-zh.jpg</image:loc></image:image>
+  </url>
+</urlset>

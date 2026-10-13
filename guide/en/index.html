@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Use FouriTre | Draw with Fourier Transform Epicycles</title>
+<meta name="description" content="Learn how to use FouriTre, a free web tool that turns your drawings, images and text into rotating circles (epicycles) using the Fourier transform. Covers drawing, image import, text, effects, video export and how the discrete Fourier transform works.">
+<link rel="canonical" href="https://fouritre.vercel.app/guide/en/">
+<link rel="alternate" hreflang="ja" href="https://fouritre.vercel.app/guide/">
+<link rel="alternate" hreflang="en" href="https://fouritre.vercel.app/guide/en/">
+<link rel="alternate" hreflang="es" href="https://fouritre.vercel.app/guide/es/">
+<link rel="alternate" hreflang="pt" href="https://fouritre.vercel.app/guide/pt/">
+<link rel="alternate" hreflang="zh-Hans" href="https://fouritre.vercel.app/guide/zh/">
+<link rel="alternate" hreflang="x-default" href="https://fouritre.vercel.app/guide/en/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#05070d">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FouriTre">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://fouritre.vercel.app/guide/en/">
+<meta property="og:title" content="FouriTre Guide | Fourier Transform Epicycle Drawing Tool">
+<meta property="og:description" content="How to use FouriTre, the free web tool that redraws your sketches with rotating circles, and how the Fourier transform behind it works.">
+<meta property="og:image" content="https://fouritre.vercel.app/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FouriTre Guide | Fourier Transform Epicycle Drawing Tool">
+<meta name="twitter:description" content="How to use FouriTre, the free web tool that redraws your sketches with rotating circles, and how the Fourier transform behind it works.">
+<meta name="twitter:image" content="https://fouritre.vercel.app/assets/og.jpg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23060a14'/><circle cx='50' cy='50' r='35' fill='none' stroke='%233d8bfd' stroke-width='3'/><circle cx='50' cy='15' r='5' fill='%23fcd34d'/></svg>">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "@id": "https://fouritre.vercel.app/guide/en/#article",
+      "headline": "How to use FouriTre",
+      "description": "Learn how to use FouriTre, a free web tool that turns your drawings, images and text into rotating circles (epicycles) using the Fourier transform. Covers drawing, image import, text, effects, video export and how the discrete Fourier transform works.",
+      "inLanguage": "en",
+      "image": "https://fouritre.vercel.app/assets/og.jpg",
+      "author": {
+        "@type": "Person",
+        "name": "Ike mfr"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Ike mfr"
+      },
+      "dateModified": "2026-10-13",
+      "mainEntityOfPage": "https://fouritre.vercel.app/guide/en/",
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "Fourier transform"
+        },
+        {
+          "@type": "Thing",
+          "name": "Discrete Fourier transform"
+        },
+        {
+          "@type": "Thing",
+          "name": "Epicycles"
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "FouriTre",
+          "item": "https://fouritre.vercel.app/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guide",
+          "item": "https://fouritre.vercel.app/guide/en/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is FouriTre free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. There is nothing to sign up for or install; just open it in your browser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are my drawings or images uploaded to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The Fourier transform and edge detection run entirely in your browser, and your drawings and images are never sent to a server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What changes when I add more circles?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The number of circles is the number of frequency components used. With few circles the shape is round and blurry; with more, corners and fine details match the original line. You can use up to 2000."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work on smartphones?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Draw on the canvas with your finger and open the settings panel with the button at the top right."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I save my animation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "From the Export menu you can save PNG, transparent PNG and JPEG images, WebM video, and a JSON project file you can edit again later."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="/guide/guide.css">
+</head>
+<body>
+<nav class="nav"><div class="in">
+  <a class="brand" href="/?lang=en"><span class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#3b4a7a" stroke-width="1.4"/><line x1="12" y1="12" x2="17.5" y2="6.5" stroke="#6d8cff" stroke-width="1.6" stroke-linecap="round"/><circle cx="17.5" cy="6.5" r="2.2" fill="#fcd34d"/></svg></span>FouriTre</a>
+  <a class="lk" href="#quickstart">Get started</a>
+  <a class="lk" href="#math">How it works</a>
+  <a class="lk" href="#faq">FAQ</a>
+  <a class="cta" href="/?lang=en">Open the app</a>
+</div></nav>
+
+<header class="hero">
+  <div>
+    <div class="eyebrow">How to use FouriTre</div>
+    <h1><span>Redraw any line<br>with spinning circles.</span></h1>
+    <p class="lead"><b>FouriTre</b> takes a hand-drawn line, an image or text, runs a <b>Fourier transform</b> on it, and redraws it by chaining together many rotating circles called <b>epicycles</b>. This guide covers how to use it and the math behind it.</p>
+    <a class="cta lg" href="/?lang=en">Start drawing →</a>
+    <div class="badges"><span>Free</span><span>No sign-up or install</span><span>Desktop / phone / tablet</span><span>5 languages</span></div>
+    <div class="langs"><a href="/guide/" hreflang="ja" lang="ja">日本語</a><a href="/guide/en/" hreflang="en" lang="en" aria-current="page">English</a><a href="/guide/es/" hreflang="es" lang="es">Español</a><a href="/guide/pt/" hreflang="pt" lang="pt">Português</a><a href="/guide/zh/" hreflang="zh-Hans" lang="zh-Hans">中文</a></div>
+  </div>
+  <img src="/assets/screenshot-app-en.jpg" width="1400" height="860" alt="The FouriTre app redrawing contours extracted from a portrait of Fourier with colorful epicycle traces" fetchpriority="high">
+</header>
+
+<div class="wrap">
+  <aside class="toc">
+    <p>Contents</p>
+    <a href="#what">What is FouriTre</a>
+    <a href="#quickstart">Get started in 3 steps</a>
+    <a href="#modes">Four input modes</a>
+    <a href="#settings">Epicycle settings</a>
+    <a href="#effects">Effects</a>
+    <a href="#edit">Editing</a>
+    <a href="#export">Saving and export</a>
+    <a href="#mobile">On mobile</a>
+    <a href="#math">How the Fourier transform works</a>
+    <a href="#faq">FAQ</a>
+  </aside>
+  <main>
+    <section id="what">
+      <h2><small>About</small>What is FouriTre?</h2>
+      <p>Any closed curve can be described as the path traced by the tip of a chain of circles, each spinning at a different speed. That is the idea behind the <b>Fourier series</b>, and FouriTre is a visualizer that lets you see it and play with it.</p>
+      <p>When you draw a single stroke on the canvas, the line is decomposed into frequency components by the <b>discrete Fourier transform (DFT)</b>. Each component becomes one circle; linking the circles from largest to smallest makes the tip retrace your line. Lower the number of circles and the shape becomes round and blurry; raise it and every detail comes back, in real time.</p>
+      <p>Use it as a math teaching aid, to build intuition for the Fourier transform, or just to make mesmerizing animations.</p>
+    </section>
+
+    <section id="quickstart">
+      <h2><small>Quick start</small>Get started in 3 steps</h2>
+      <ol class="steps">
+        <li><b>Open the app</b><br>Open <a href="/?lang=en">fouritre.vercel.app</a> in your browser. You start in Draw mode.</li>
+        <li><b>Draw a single stroke</b><br>Drag with your mouse or finger and release. A chain of circles appears and redraws your line.</li>
+        <li><b>Adjust circles and speed</b><br>In the right-hand panel (the settings button at the top right on phones), change “Circles” and “Draw time”. When you like the result, use “Export” to save an image or a video.</li>
+      </ol>
+      <div class="note">Tip: don’t feel like drawing? Pick a heart or star from the Presets tab, or press “Random” at the bottom of the screen.</div>
+    </section>
+
+    <section id="modes">
+      <h2><small>Input modes</small>Four input modes</h2>
+      <p>Use the tabs at the top of the panel to choose what to turn into epicycles.</p>
+      <div class="cards">
+        <div class="card"><h3>Draw</h3><p>Draw freely with a mouse or finger. “Stabilizer” reduces hand jitter and “Smoothing” evens out the finished line.</p></div>
+        <div class="card"><h3>Image</h3><p>Load a photo or illustration; edges are detected and converted into several lines. “Threshold” sets the edge sensitivity and “Contours” the number of lines used.</p></div>
+        <div class="card"><h3>Text</h3><p>Draw the outline of letters or emoji. Multiple lines are supported, and you can load your own font file (TTF / OTF / WOFF).</p></div>
+        <div class="card"><h3>Presets</h3><p>One click for a star, heart, infinity sign, π, butterfly, square wave, cat, spiral, DNA or a portrait of Fourier.</p></div>
+      </div>
+      <h3>Tips for converting images</h3>
+      <ul>
+        <li>Images with a plain background and clear outlines give the most stable results.</li>
+        <li>If there are too many messy lines, raise “Threshold” or lower “Contours”.</li>
+        <li>After changing settings, press “Re-detect” to process the same image again. “Mono” draws every trace in one color.</li>
+      </ul>
+      <h3>Lines that don’t close are fine</h3>
+      <p>A Fourier series assumes a shape that comes back to where it started, so transforming an open line directly would join its two ends with a straight segment and cause ripples (the Gibbs phenomenon). FouriTre computes open lines internally as a there-and-back path and stops drawing at the end point, so your open line is reproduced exactly as drawn.</p>
+    </section>
+
+    <section id="settings">
+      <h2><small>Settings</small>Epicycle settings</h2>
+      <table>
+        <tr><th>Circles (1–2000)</th><td>The number of frequency components used. Fewer gives a simpler, rounder shape; more follows the original line closely. Changing it restarts the drawing.</td></tr>
+        <tr><th>Draw time (0.5–60 s)</th><td>How many seconds one full pass takes. It runs at the same speed on 60 Hz and 120 Hz screens.</td></tr>
+        <tr><th>Width (0.5–16)</th><td>The thickness of the trace.</td></tr>
+        <tr><th>Colors</th><td>Change the trace, circle, background and grid colors. The background can be “Grid”, “Dots” or “None”, with the slider next to it setting the spacing.</td></tr>
+      </table>
+    </section>
+
+    <section id="effects">
+      <h2><small>Effects</small>Effects</h2>
+      <table>
+        <tr><th>Rainbow</th><td>Draws the trace with a rainbow gradient.</td></tr>
+        <tr><th>Persist</th><td>Keeps finished traces on screen. Turn it off to redraw the same shape over and over.</td></tr>
+        <tr><th>Reveal</th><td>Starts with one circle and adds more little by little, so you can watch the shape converge to your line. A great way to feel how a Fourier series converges.</td></tr>
+        <tr><th>Mirror</th><td>Also draws the reflection across an axis. You can set the axis angle and position and show or hide the axis.</td></tr>
+        <tr><th>Sparkle</th><td>Particles of light fly from the pen tip.</td></tr>
+        <tr><th>Sync</th><td>With several contours, makes them all finish at the same time. When off, smaller contours finish sooner.</td></tr>
+      </table>
+    </section>
+
+    <section id="edit">
+      <h2><small>Editing</small>Editing</h2>
+      <ul>
+        <li><b>Move</b>: turn it on and drag near a shape to move it.</li>
+        <li><b>Copy / Paste</b>: press “Copy” and click a shape to copy it, then “Paste” to place a slightly offset duplicate. The thumbnail in the header shows what is on the clipboard.</li>
+        <li><b>Delete</b>: turn it on and click to delete the nearest shape. “Clear all” erases everything.</li>
+        <li><b>Undo / Redo</b>: up to 30 steps of history.</li>
+      </ul>
+      <h3>Keyboard shortcuts</h3>
+      <table>
+        <tr><th><kbd>Ctrl</kbd> + <kbd>Z</kbd></th><td>Undo</td></tr>
+        <tr><th><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd> / <kbd>Ctrl</kbd> + <kbd>Y</kbd></th><td>Redo</td></tr>
+        <tr><th><kbd>Ctrl</kbd> + <kbd>C</kbd> / <kbd>Ctrl</kbd> + <kbd>V</kbd></th><td>Copy / paste the shape under the cursor</td></tr>
+      </table>
+      <p>On a Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>. While you are typing in a text field, these keys copy and paste text as usual.</p>
+    </section>
+
+    <section id="export">
+      <h2><small>Export</small>Saving and export</h2>
+      <p>Use “Export” in the header to save with a file name of your choice.</p>
+      <ul>
+        <li><b>PNG / JPEG</b>: saves the current canvas as an image.</li>
+        <li><b>PNG (transparent)</b>: an image with a transparent background, handy for video editing and design.</li>
+        <li><b>WebM video</b>: records the animation from start to finish.</li>
+        <li><b>JSON project</b>: saves your lines and settings. Open it later with “Load” at the bottom of the screen to keep editing.</li>
+      </ul>
+    </section>
+
+    <section id="mobile">
+      <h2><small>Mobile</small>Using it on phones and tablets</h2>
+      <div class="mob">
+        <div>
+          <p>On phones the settings panel is hidden so the canvas can fill the screen. Tap the <b>settings button at the top right</b> to slide the panel up from the bottom. Touching the canvas closes it automatically so you can start drawing right away.</p>
+          <p>Trace with one finger to draw a line. For fine detail, a tablet with a stylus works best.</p>
+        </div>
+        <img src="/assets/screenshot-mobile-en.jpg" width="780" height="1600" alt="FouriTre on a smartphone with the settings panel open" loading="lazy">
+      </div>
+    </section>
+
+    <section id="math">
+      <h2><small>Math</small>How the Fourier transform works</h2>
+      <h3>1. Turn the line into a sequence of complex numbers</h3>
+      <p>The line you draw is resampled into N evenly spaced points. Treating each point (x, y) as a complex number <b>z = x + iy</b> turns the line into the sequence z[0], z[1], …, z[N−1].</p>
+      <h3>2. Split it into frequencies with the discrete Fourier transform</h3>
+      <div class="fm">X[k] = (1/N) · Σ<sub>n=0..N−1</sub> z[n] · e<sup>−i2πkn/N</sup></div>
+      <p>Each resulting X[k] corresponds to one circle, defined by three properties:</p>
+      <table>
+        <tr><th>Amplitude |X[k]|</th><td>The radius of the circle</td></tr>
+        <tr><th>Frequency k</th><td>How many turns it makes per cycle (negative means it spins the other way)</td></tr>
+        <tr><th>Phase arg X[k]</th><td>The angle it starts from</td></tr>
+      </table>
+      <h3>3. Chain the circles to redraw the line</h3>
+      <div class="fm">z(t) = Σ<sub>k</sub> X[k] · e<sup>ikt</sup>　(0 ≤ t &lt; 2π)</div>
+      <p>Place each circle’s center on the tip of the previous one, from the largest radius down, and the tip of the last circle traces z(t). These are the <b>epicycles</b>. Large components shape the result the most, so a handful of circles already shows the rough form, and more circles add detail. <b>JPEG image compression</b> rests on the same idea of discarding the frequency components that matter least.</p>
+      <div class="note">Epicycles were first used in ancient Greek astronomy to explain the motion of the planets. Seen through the Fourier series, stacking enough circles can describe any periodic path.</div>
+    </section>
+
+    <section id="faq">
+      <h2><small>FAQ</small>Frequently asked questions</h2>
+      <details open><summary>Is FouriTre free?</summary><p>Yes. There is nothing to sign up for or install; just open it in your browser.</p></details>
+      <details><summary>Are my drawings or images uploaded to a server?</summary><p>No. The Fourier transform and edge detection run entirely in your browser, and your drawings and images are never sent to a server.</p></details>
+      <details><summary>What changes when I add more circles?</summary><p>The number of circles is the number of frequency components used. With few circles the shape is round and blurry; with more, corners and fine details match the original line. You can use up to 2000.</p></details>
+      <details><summary>Does it work on smartphones?</summary><p>Yes. Draw on the canvas with your finger and open the settings panel with the button at the top right.</p></details>
+      <details><summary>Can I save my animation?</summary><p>From the Export menu you can save PNG, transparent PNG and JPEG images, WebM video, and a JSON project file you can edit again later.</p></details>
+    </section>
+
+    <div class="end">
+      <h2>Give it a try</h2>
+      <p>One stroke is all it takes to make the Fourier transform click.</p>
+      <a class="cta lg" href="/?lang=en">Open FouriTre →</a>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="langs"><a href="/guide/" hreflang="ja" lang="ja">日本語</a><a href="/guide/en/" hreflang="en" lang="en" aria-current="page">English</a><a href="/guide/es/" hreflang="es" lang="es">Español</a><a href="/guide/pt/" hreflang="pt" lang="pt">Português</a><a href="/guide/zh/" hreflang="zh-Hans" lang="zh-Hans">中文</a></div>
+  <p>&copy; Ike mfr ・ <a href="/?lang=en">FouriTre</a> ・ <a href="https://buymeacoffee.com/ike_mfr">Buy Me a Coffee</a></p>
+</footer>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

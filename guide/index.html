@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>使い方ガイド | FouriTre（フーリトレ）- フーリエ変換で絵を描くエピサイクル描画ツール</title>
+<meta name="description" content="FouriTre（フーリトレ）の使い方。手描きの線・画像・文字をフーリエ変換して、回転する円（エピサイクル）で描き直す無料Webツールです。描画・画像インポート・テキスト変換・エフェクト・動画書き出しの操作方法と、離散フーリエ変換（DFT）の仕組みをやさしく解説します。">
+<link rel="canonical" href="https://fouritre.vercel.app/guide/">
+<link rel="alternate" hreflang="ja" href="https://fouritre.vercel.app/guide/">
+<link rel="alternate" hreflang="en" href="https://fouritre.vercel.app/guide/en/">
+<link rel="alternate" hreflang="es" href="https://fouritre.vercel.app/guide/es/">
+<link rel="alternate" hreflang="pt" href="https://fouritre.vercel.app/guide/pt/">
+<link rel="alternate" hreflang="zh-Hans" href="https://fouritre.vercel.app/guide/zh/">
+<link rel="alternate" hreflang="x-default" href="https://fouritre.vercel.app/guide/en/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#05070d">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FouriTre">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="pt_BR">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:url" content="https://fouritre.vercel.app/guide/">
+<meta property="og:title" content="FouriTre 使い方ガイド | フーリエ変換エピサイクル描画ツール">
+<meta property="og:description" content="描いた絵を回転する円で再現する無料Webツール FouriTre の操作方法と、フーリエ変換の仕組みを解説。">
+<meta property="og:image" content="https://fouritre.vercel.app/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FouriTre 使い方ガイド">
+<meta name="twitter:description" content="描いた絵を回転する円で再現する無料Webツール FouriTre の操作方法と、フーリエ変換の仕組みを解説。">
+<meta name="twitter:image" content="https://fouritre.vercel.app/assets/og.jpg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23060a14'/><circle cx='50' cy='50' r='35' fill='none' stroke='%233d8bfd' stroke-width='3'/><circle cx='50' cy='15' r='5' fill='%23fcd34d'/></svg>">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "@id": "https://fouritre.vercel.app/guide/#article",
+      "headline": "FouriTre（フーリトレ）使い方ガイド",
+      "description": "手描きの線・画像・文字をフーリエ変換し、回転する円（エピサイクル）で描き直すWebツール FouriTre の使い方と仕組みの解説。",
+      "inLanguage": "ja",
+      "image": "https://fouritre.vercel.app/assets/og.jpg",
+      "author": { "@type": "Person", "name": "Ike mfr" },
+      "publisher": { "@type": "Person", "name": "Ike mfr" },
+      "dateModified": "2026-10-13",
+      "mainEntityOfPage": "https://fouritre.vercel.app/guide/",
+      "about": [
+        { "@type": "Thing", "name": "フーリエ変換" },
+        { "@type": "Thing", "name": "離散フーリエ変換" },
+        { "@type": "Thing", "name": "エピサイクル" }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "FouriTre", "item": "https://fouritre.vercel.app/" },
+        { "@type": "ListItem", "position": 2, "name": "使い方ガイド", "item": "https://fouritre.vercel.app/guide/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "FouriTreは無料ですか？",
+          "acceptedAnswer": { "@type": "Answer", "text": "はい、無料です。登録やインストールは不要で、ブラウザで開くだけで使えます。" } },
+        { "@type": "Question", "name": "描いた絵や画像はサーバーに送信されますか？",
+          "acceptedAnswer": { "@type": "Answer", "text": "いいえ。フーリエ変換や輪郭抽出はすべてブラウザ内で計算され、描いた線や読み込んだ画像がサーバーに送られることはありません。" } },
+        { "@type": "Question", "name": "円の数を増やすと何が変わりますか？",
+          "acceptedAnswer": { "@type": "Answer", "text": "円の数は使用する周波数成分の数です。少ないと形が丸くぼやけ、増やすほど角や細部まで元の線に近づきます。最大2000個まで設定できます。" } },
+        { "@type": "Question", "name": "スマートフォンでも使えますか？",
+          "acceptedAnswer": { "@type": "Answer", "text": "使えます。指でキャンバスに描けます。設定は右上のボタンで開くパネルから変更できます。" } },
+        { "@type": "Question", "name": "作ったアニメーションを保存できますか？",
+          "acceptedAnswer": { "@type": "Answer", "text": "書き出しメニューから PNG・背景透過PNG・JPEG の画像、WebM 形式の動画、再編集できる JSON プロジェクトファイルとして保存できます。" } }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="/guide/guide.css">
+</head>
+<body>
+<nav class="nav"><div class="in">
+  <a class="brand" href="/?lang=ja"><span class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#3b4a7a" stroke-width="1.4"/><line x1="12" y1="12" x2="17.5" y2="6.5" stroke="#6d8cff" stroke-width="1.6" stroke-linecap="round"/><circle cx="17.5" cy="6.5" r="2.2" fill="#fcd34d"/></svg></span>FouriTre</a>
+  <a class="lk" href="#quickstart">はじめかた</a>
+  <a class="lk" href="#math">仕組み</a>
+  <a class="lk" href="#faq">FAQ</a>
+  <a class="cta" href="/?lang=ja">アプリを開く</a>
+</div></nav>
+
+<header class="hero">
+  <div>
+    <div class="eyebrow">How to use FouriTre</div>
+    <h1><span>描いた線を、<br>回転する円で描き直す。</span></h1>
+    <p class="lead"><b>FouriTre（フーリトレ）</b>は、手描きの線・画像・文字を<b>フーリエ変換</b>し、たくさんの回転する円（<b>エピサイクル</b>）をつなげて元の形を描き直すWebツールです。このページでは操作方法と、その裏側にある数学をまとめて紹介します。</p>
+    <a class="cta lg" href="/?lang=ja">今すぐ描いてみる →</a>
+    <div class="badges"><span>無料</span><span>登録・インストール不要</span><span>PC / スマホ / タブレット</span><span>5か国語に対応</span></div>
+    <div class="langs"><a href="/guide/" hreflang="ja" lang="ja" aria-current="page">日本語</a><a href="/guide/en/" hreflang="en" lang="en">English</a><a href="/guide/es/" hreflang="es" lang="es">Español</a><a href="/guide/pt/" hreflang="pt" lang="pt">Português</a><a href="/guide/zh/" hreflang="zh-Hans" lang="zh-Hans">中文</a></div>
+  </div>
+  <img src="/assets/screenshot-app.jpg" width="1400" height="860" alt="FouriTreの画面。フーリエの肖像画像から抽出した輪郭を、色とりどりのエピサイクルの軌跡で描き直している" fetchpriority="high">
+</header>
+
+<div class="wrap">
+  <aside class="toc">
+    <p>目次</p>
+    <a href="#what">FouriTreとは</a>
+    <a href="#quickstart">3ステップで始める</a>
+    <a href="#modes">4つの入力モード</a>
+    <a href="#settings">エピサイクルの設定</a>
+    <a href="#effects">エフェクト</a>
+    <a href="#edit">編集操作</a>
+    <a href="#export">保存と書き出し</a>
+    <a href="#mobile">スマホで使う</a>
+    <a href="#math">フーリエ変換の仕組み</a>
+    <a href="#faq">よくある質問</a>
+  </aside>
+  <main>
+    <section id="what">
+      <h2><small>About</small>FouriTreとは</h2>
+      <p>どんな閉じた曲線も、「回転速度の違う円をたくさんつなげたもの」の先端の軌跡として表せます。これは<b>フーリエ級数</b>の考え方で、FouriTre はそれを目で見て、手で触って体験できるようにしたビジュアライザです。</p>
+      <p>キャンバスに一筆書きをすると、その線が<b>離散フーリエ変換（DFT）</b>で周波数成分に分解されます。成分ひとつがひとつの円になり、円を大きい順に連結した先端が、元の線をなぞり直します。円の数を減らすと形が丸くぼやけ、増やすと細部まで再現される様子がリアルタイムで確かめられます。</p>
+      <p>数学の授業の教材、フーリエ変換の直感的な理解、ちょっと不思議なアニメーション作りなどに使えます。</p>
+    </section>
+
+    <section id="quickstart">
+      <h2><small>Quick start</small>3ステップで始める</h2>
+      <ol class="steps">
+        <li><b>アプリを開く</b><br><a href="/?lang=ja">fouritre.vercel.app</a> をブラウザで開きます。最初は「描画」モードです。</li>
+        <li><b>キャンバスに一筆書きする</b><br>マウスや指でドラッグして線を描き、離すと変換が始まります。円の連鎖が現れて、あなたの線を描き直します。</li>
+        <li><b>円の数や速さを調整する</b><br>右側のパネル（スマホは右上の設定ボタン）で「円の数」や「描画時間」を変えてみましょう。気に入ったら「書き出し」で画像や動画にできます。</li>
+      </ol>
+      <div class="note">ヒント：描くのが面倒なら「テンプレ」タブのハートや星、または画面下の「自動生成」ボタンを押すだけでも動きを楽しめます。</div>
+    </section>
+
+    <section id="modes">
+      <h2><small>Input modes</small>4つの入力モード</h2>
+      <p>パネル上部のタブで、何をエピサイクルにするかを選びます。</p>
+      <div class="cards">
+        <div class="card"><h3>描画</h3><p>マウスや指で自由に描きます。「安定化」で手ぶれを抑え、「平滑化」で描き終わった線をなめらかにします。</p></div>
+        <div class="card"><h3>画像</h3><p>写真やイラストを読み込み、エッジ（輪郭）を検出して複数の線に変換します。「閾値」で検出の感度、「輪郭数」で使う線の本数を決めます。</p></div>
+        <div class="card"><h3>テキスト</h3><p>文字や絵文字の輪郭を描きます。複数行にも対応し、手持ちのフォントファイル（TTF / OTF / WOFF）も読み込めます。</p></div>
+        <div class="card"><h3>テンプレ</h3><p>星・ハート・無限大・π・蝶・矩形波・猫・渦巻・DNA・フーリエの肖像を、ワンクリックで呼び出せます。</p></div>
+      </div>
+      <h3>画像をきれいに変換するコツ</h3>
+      <ul>
+        <li>背景が単色で、輪郭のはっきりした画像ほど結果が安定します。</li>
+        <li>線が多すぎてごちゃつくときは「閾値」を上げるか「輪郭数」を減らします。</li>
+        <li>設定を変えたら「再検出」で同じ画像を処理し直せます。「単色」でトレースを1色にまとめることもできます。</li>
+      </ul>
+      <h3>線の始点と終点が離れていても大丈夫</h3>
+      <p>フーリエ級数は「一周して元に戻る」形を前提とするため、開いた線をそのまま変換すると端と端が直線で結ばれ、そこに波打ち（ギブス現象）が出てしまいます。FouriTre は開いた線を内部で往復の経路として計算し、描画は終点で止めるので、描いたとおりの開いた線として再現されます。</p>
+    </section>
+
+    <section id="settings">
+      <h2><small>Settings</small>エピサイクルの設定</h2>
+      <table>
+        <tr><th>円の数（1〜2000）</th><td>使う周波数成分の数です。少ないほど丸く単純な形に、多いほど元の線に忠実になります。値を変えると描画がやり直されます。</td></tr>
+        <tr><th>描画時間（0.5〜60秒）</th><td>線を1周描き終えるまでの秒数です。画面のリフレッシュレート（60Hz / 120Hz）に関係なく同じ速さで動きます。</td></tr>
+        <tr><th>線幅（0.5〜16）</th><td>軌跡の線の太さです。</td></tr>
+        <tr><th>カラー</th><td>軌跡・円・背景・グリッドの色を自由に変えられます。背景は「グリッド」「ドット」「なし」から選べ、隣のスライダーで間隔を調整します。</td></tr>
+      </table>
+    </section>
+
+    <section id="effects">
+      <h2><small>Effects</small>エフェクト</h2>
+      <table>
+        <tr><th>虹色</th><td>軌跡を虹色のグラデーションで描きます。</td></tr>
+        <tr><th>残画</th><td>描き終わった軌跡を画面に残します。オフにすると同じ形を繰り返し描き続けます。</td></tr>
+        <tr><th>漸出</th><td>円を1個から少しずつ増やしていき、形がだんだん元の線に近づく様子を見せます。フーリエ級数の収束を体感するのにおすすめです。</td></tr>
+        <tr><th>鏡像</th><td>軸に対して線対称な軌跡も同時に描きます。軸の角度と位置を調整でき、軸の表示も切り替えられます。</td></tr>
+        <tr><th>キラキラ</th><td>ペン先から光の粒が飛び散ります。</td></tr>
+        <tr><th>同期描画</th><td>複数の輪郭があるとき、すべてが同じ時間で描き終わるようにそろえます。オフでは、細かい輪郭ほど早く描き終わります。</td></tr>
+      </table>
+    </section>
+
+    <section id="edit">
+      <h2><small>Editing</small>編集操作</h2>
+      <ul>
+        <li><b>移動</b>：オンにして図形の近くをドラッグすると、その図形を動かせます。</li>
+        <li><b>コピー / ペースト</b>：「コピー」を押してから図形をクリックすると複製元に登録され、「ペースト」で少しずらして貼り付けます。ヘッダーのサムネイルに今コピーしている形が表示されます。</li>
+        <li><b>選択削除</b>：オンにしてクリックすると、いちばん近い図形を削除します。「全削除」ですべて消去します。</li>
+        <li><b>元に戻す / やり直し</b>：30ステップまで履歴をたどれます。</li>
+      </ul>
+      <h3>キーボードショートカット</h3>
+      <table>
+        <tr><th><kbd>Ctrl</kbd> + <kbd>Z</kbd></th><td>元に戻す</td></tr>
+        <tr><th><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd> / <kbd>Ctrl</kbd> + <kbd>Y</kbd></th><td>やり直し</td></tr>
+        <tr><th><kbd>Ctrl</kbd> + <kbd>C</kbd> / <kbd>Ctrl</kbd> + <kbd>V</kbd></th><td>マウス位置の図形をコピー / ペースト</td></tr>
+      </table>
+      <p>Mac では <kbd>Ctrl</kbd> の代わりに <kbd>⌘</kbd> を使います。テキスト入力欄で入力しているあいだは、通常の文字のコピー・貼り付けとして動作します。</p>
+    </section>
+
+    <section id="export">
+      <h2><small>Export</small>保存と書き出し</h2>
+      <p>ヘッダーの「書き出し」から、ファイル名を付けて保存できます。</p>
+      <ul>
+        <li><b>PNG / JPEG</b>：今のキャンバスを画像として保存します。</li>
+        <li><b>PNG（透明）</b>：背景を透過した画像です。動画編集やデザインの素材にどうぞ。</li>
+        <li><b>WebM 動画</b>：最初から描き終わるまでのアニメーションを録画します。</li>
+        <li><b>JSON プロジェクト</b>：線のデータと設定を保存します。画面下の「読込」で開けば、続きから編集できます。</li>
+      </ul>
+    </section>
+
+    <section id="mobile">
+      <h2><small>Mobile</small>スマホ・タブレットで使う</h2>
+      <div class="mob">
+        <div>
+          <p>スマホでは、キャンバスを画面いっぱいに使えるよう設定パネルが隠れています。<b>右上の設定ボタン</b>を押すと、下からパネルが出てきます。キャンバスに触れるとパネルは自動で閉じるので、すぐに描き始められます。</p>
+          <p>指1本でなぞるとそのまま線になります。細かい線を描きたいときは、タブレットとスタイラスペンの組み合わせがおすすめです。</p>
+        </div>
+        <img src="/assets/screenshot-mobile.jpg" width="780" height="1600" alt="スマートフォンでFouriTreの設定パネルを開いた画面" loading="lazy">
+      </div>
+    </section>
+
+    <section id="math">
+      <h2><small>Math</small>フーリエ変換の仕組み</h2>
+      <h3>1. 線を複素数の列にする</h3>
+      <p>描いた線を、長さが等しくなるように N 個の点に打ち直します。各点の座標 (x, y) を複素数 <b>z = x + iy</b> とみなすと、線は複素数の列 z[0], z[1], …, z[N−1] になります。</p>
+      <h3>2. 離散フーリエ変換で周波数に分解する</h3>
+      <div class="fm">X[k] = (1/N) · Σ<sub>n=0..N−1</sub> z[n] · e<sup>−i2πkn/N</sup></div>
+      <p>得られた X[k] のひとつひとつが1個の円に対応します。円の性質は次の3つで決まります。</p>
+      <table>
+        <tr><th>振幅 |X[k]|</th><td>円の半径</td></tr>
+        <tr><th>周波数 k</th><td>1周するあいだに何回転するか（マイナスは逆回転）</td></tr>
+        <tr><th>位相 arg X[k]</th><td>回転を始める角度</td></tr>
+      </table>
+      <h3>3. 円をつなげて描き直す</h3>
+      <div class="fm">z(t) = Σ<sub>k</sub> X[k] · e<sup>ikt</sup>　(0 ≤ t &lt; 2π)</div>
+      <p>半径の大きい順に円の中心を前の円の先端に置いていくと、最後の円の先端が z(t) を描きます。これが<b>エピサイクル</b>（周転円）です。半径の大きい成分ほど形への影響が大きいので、上位の数個だけでも大まかな形が現れ、円を増やすほど細部が加わります。<b>JPEG 画像の圧縮</b>も、同じように「影響の小さい周波数成分を捨てる」という考え方に基づいています。</p>
+      <div class="note">エピサイクルは、もともと古代ギリシャの天文学で惑星の動きを説明するために考えられたものです。フーリエ級数の視点から見ると、円を十分に重ねればどんな周期的な軌道でも表せることになります。</div>
+    </section>
+
+    <section id="faq">
+      <h2><small>FAQ</small>よくある質問</h2>
+      <details open><summary>FouriTreは無料ですか？</summary><p>はい、無料です。登録やインストールは不要で、ブラウザで開くだけで使えます。</p></details>
+      <details><summary>描いた絵や画像はサーバーに送信されますか？</summary><p>いいえ。フーリエ変換や輪郭抽出はすべてブラウザ内で計算され、描いた線や読み込んだ画像がサーバーに送られることはありません。</p></details>
+      <details><summary>円の数を増やすと何が変わりますか？</summary><p>円の数は使用する周波数成分の数です。少ないと形が丸くぼやけ、増やすほど角や細部まで元の線に近づきます。最大2000個まで設定できます。</p></details>
+      <details><summary>スマートフォンでも使えますか？</summary><p>使えます。指でキャンバスに描けます。設定は右上のボタンで開くパネルから変更できます。</p></details>
+      <details><summary>作ったアニメーションを保存できますか？</summary><p>書き出しメニューから PNG・背景透過PNG・JPEG の画像、WebM 形式の動画、再編集できる JSON プロジェクトファイルとして保存できます。</p></details>
+    </section>
+
+    <div class="end">
+      <h2>さっそく描いてみよう</h2>
+      <p>一筆書きひとつで、フーリエ変換がぐっと身近になります。</p>
+      <a class="cta lg" href="/?lang=ja">FouriTre を開く →</a>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="langs"><a href="/guide/" hreflang="ja" lang="ja" aria-current="page">日本語</a><a href="/guide/en/" hreflang="en" lang="en">English</a><a href="/guide/es/" hreflang="es" lang="es">Español</a><a href="/guide/pt/" hreflang="pt" lang="pt">Português</a><a href="/guide/zh/" hreflang="zh-Hans" lang="zh-Hans">中文</a></div>
+  <p>&copy; Ike mfr ・ <a href="/?lang=ja">FouriTre</a> ・ <a href="https://buymeacoffee.com/ike_mfr">Buy Me a Coffee</a></p>
+</footer>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
