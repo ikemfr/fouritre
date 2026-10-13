@@ -363,7 +363,8 @@ textarea { font-size: 14px; height: 40px; }
         var undoStack = [], redoStack = [], dragging = null;
         var lastMouse = { x: 0, y: 0 }, clipboard = null;
         var PAL = ['#fcd34d', '#34d399', '#a78bfa', '#60a5fa', '#f87171', '#38bdf8', '#a3e635', '#fb923c', '#e879f9', '#22d3ee', '#facc15', '#4ade80', '#818cf8', '#f472b6', '#2dd4bf'];
-        function hR(h) { return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)] }
+        var TAU = Math.PI * 2;
+        var hRc = {}; function hR(h) { return hRc[h] || (hRc[h] = [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]) }
         function rA(h, a) { var c = hR(h); return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')' }
 
         // =====================================================
@@ -376,6 +377,7 @@ textarea { font-size: 14px; height: 40px; }
         function redo() { if (!redoStack.length) return; undoStack.push(snapSt()); restSt(redoStack.pop()); updUB() }
         function updUB() { $('b-undo').disabled = !undoStack.length; $('b-redo').disabled = !redoStack.length }
         document.addEventListener('keydown', function (e) {
+            var tg = e.target; if (tg && (tg.tagName === 'INPUT' || tg.tagName === 'TEXTAREA' || tg.tagName === 'SELECT' || tg.isContentEditable)) return;
             if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo() }
             if ((e.ctrlKey || e.metaKey) && e.key === 'y') { e.preventDefault(); redo() }
             if ((e.ctrlKey || e.metaKey) && e.key === 'c') { e.preventDefault(); copyObj() }
@@ -389,7 +391,7 @@ textarea { font-size: 14px; height: 40px; }
         // =====================================================
 
         // Compute Discrete Fourier Transform of complex path
-        function dft(pts) { var N = pts.length, X = [], hN = Math.floor(N / 2); for (var k = -hN; k <= hN; k++) { var re = 0, im = 0; for (var n = 0; n < N; n++) { var ph = (6.2832 * k * n) / N; re += pts[n].x * Math.cos(ph) + pts[n].y * Math.sin(ph); im += -pts[n].x * Math.sin(ph) + pts[n].y * Math.cos(ph) } re /= N; im /= N; X.push({ r: re, i: im, f: k, a: Math.sqrt(re * re + im * im), p: Math.atan2(im, re) }) } X.sort(function (a, b) { return b.a - a.a }); return X }
+        function dft(pts) { var N = pts.length, X = [], hN = Math.floor(N / 2), cs = new Float64Array(N), sn = new Float64Array(N), px = new Float64Array(N), py = new Float64Array(N); for (var n = 0; n < N; n++) { cs[n] = Math.cos(TAU * n / N); sn[n] = Math.sin(TAU * n / N); px[n] = pts[n].x; py[n] = pts[n].y } for (var k = -hN; k <= hN; k++) { var re = 0, im = 0, step = ((k % N) + N) % N, idx = 0; for (var n = 0; n < N; n++) { var c = cs[idx], si = sn[idx]; re += px[n] * c + py[n] * si; im += -px[n] * si + py[n] * c; idx += step; if (idx >= N) idx -= N } re /= N; im /= N; X.push({ r: re, i: im, f: k, a: Math.sqrt(re * re + im * im), p: Math.atan2(im, re) }) } X.sort(function (a, b) { return b.a - a.a }); return X }
         // Resample path to N evenly-spaced points
         function resamp(pts, N) { if (pts.length < 2) return pts; var d = [0]; for (var i = 1; i < pts.length; i++) { var dx = pts[i].x - pts[i - 1].x, dy = pts[i].y - pts[i - 1].y; d.push(d[i - 1] + Math.sqrt(dx * dx + dy * dy)) } var tl = d[d.length - 1]; if (!tl) return pts.slice(0, Math.min(pts.length, N)); var step = tl / N, res = [], j = 0; for (var i = 0; i < N; i++) { var tgt = i * step; while (j < d.length - 1 && d[j + 1] < tgt) j++; if (j >= pts.length - 1) { res.push({ x: pts[pts.length - 1].x, y: pts[pts.length - 1].y }); continue } var sl = d[j + 1] - d[j], t = sl ? (tgt - d[j]) / sl : 0; res.push({ x: pts[j].x + (pts[j + 1].x - pts[j].x) * t, y: pts[j].y + (pts[j + 1].y - pts[j].y) * t }) } return res }
         // Smooth path with n passes of averaging filter
@@ -457,12 +459,15 @@ textarea { font-size: 14px; height: 40px; }
         // =====================================================
         // MAIN ANIMATION LOOP
         // =====================================================
-        function loop() {
+        var lastFrameT = 0;
+        function loop(ts) {
+            // Frame-rate independent timing (60Hz and 120Hz displays animate at the same speed)
+            var fdt = lastFrameT && ts ? Math.min((ts - lastFrameT) / 1000, 0.1) : 1 / 60; lastFrameT = ts || 0;
             // Update reveal count and clear traces to prevent "jumping" lines when circle count increases
             if (revealMode) {
                 var prevN = Math.floor(revealN);
                 if (revealN < mc) {
-                    revealN += 0.4; // Control reveal speed
+                    revealN += 24 * fdt; // Control reveal speed (~24 circles/s)
                     if (Math.floor(revealN) !== prevN) {
                         // Reset all traces because changing the number of circles shifts the tip position
                         layers.forEach(function(ly) {
@@ -486,14 +491,14 @@ textarea { font-size: 14px; height: 40px; }
                         if (con.done) { drT(con); return; }
 
                         var N = con.fc.length;
-                        var dt_base = (6.2832 / (drawDuration * 60));
+                        var dt_base = TAU * fdt / drawDuration;
 
                         var dt = fSync ? dt_base : dt_base * (maxN / N);
 
                         var subSteps = Math.max(1, Math.ceil(dt / 0.05));
                         for (var s = 1; s <= subSteps; s++) {
                             var nextTm = con.tm + (dt * s / subSteps);
-                            if (nextTm > 6.2832) nextTm = 6.2832;
+                            if (nextTm > TAU) nextTm = TAU;
 
                             var tip = getTip(con, nextTm, nC);
                             con.tp.push({ x: tip.x - con.dx, y: tip.y - con.dy });
@@ -505,18 +510,18 @@ textarea { font-size: 14px; height: 40px; }
                                     life: 1.0, color: con.color
                                 });
                             }
-                            if (nextTm >= 6.2832) break;
+                            if (nextTm >= TAU) break;
                         }
 
                         con.tm += dt;
-                        var finalTip = drE(con, Math.min(con.tm, 6.2832), nC);
+                        var finalTip = drE(con, Math.min(con.tm, TAU), nC);
                         drT(con);
 
                         if (fMirror) { var mcon = { tp: con.tp.map(function (p) { return mirrorPt(p.x + con.dx, p.y + con.dy) }), color: con.color, dx: 0, dy: 0 }; drT(mcon, 0, 0) }
 
                         // After one full cycle, mark done. Do NOT reset tm to 0.
                         // This prevents retracing the same contour path.
-                        if (con.tm >= 6.2832) {
+                        if (con.tm >= TAU) {
                             con.done = true;
                             var fr = con.tp.slice(); fr.color = con.color;
                             ly.frozen.push(fr); con.tp = [];
@@ -527,8 +532,9 @@ textarea { font-size: 14px; height: 40px; }
             if (fSparkle) {
                 for (var i = particles.length - 1; i >= 0; i--) {
                     var p = particles[i];
-                    p.x += p.vx; p.y += p.vy;
-                    p.life -= 0.03;
+                    var fk = fdt * 60;
+                    p.x += p.vx * fk; p.y += p.vy * fk;
+                    p.life -= 0.03 * fk;
                     if (p.life <= 0) {
                         particles.splice(i, 1);
                     } else {
