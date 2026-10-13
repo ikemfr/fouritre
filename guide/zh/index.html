@@ -185,6 +185,7 @@
         <li><b>一笔画出线条</b><br>用鼠标或手指拖动后松开，一串旋转的圆就会出现，并重新画出你的线条。</li>
         <li><b>调整圆的数量和速度</b><br>在右侧面板（手机上点右上角的设置按钮）中修改“圆的数量”和“绘制时间”。满意后，用“导出”保存为图片或视频。</li>
       </ol>
+      <figure class="demo"><video poster="/assets/demo/quickstart-zh.jpg" width="960" height="560" muted loop playsinline preload="none" aria-label="一笔画出线条，旋转的圆就会把它重新画出来。减少“圆的数量”，形状会变圆。"><source src="/assets/demo/quickstart-zh.webm" type="video/webm"><source src="/assets/demo/quickstart-zh.mp4" type="video/mp4"></video><figcaption>一笔画出线条，旋转的圆就会把它重新画出来。减少“圆的数量”，形状会变圆。</figcaption></figure>
       <div class="note">提示：不想自己画？在“模板”选项卡里选择爱心或星星，或者点击屏幕下方的“随机生成”就能看到效果。</div>
     </section>
 
@@ -197,6 +198,7 @@
         <div class="card"><h3>文字</h3><p>画出文字或表情符号的轮廓。支持多行，也可以载入自己的字体文件（TTF / OTF / WOFF）。</p></div>
         <div class="card"><h3>模板</h3><p>一键调出星星、爱心、无穷符号、π、蝴蝶、方波、猫、螺旋、DNA 和傅里叶肖像。</p></div>
       </div>
+      <div class="demo2"><figure class="demo"><video poster="/assets/demo/image.jpg" width="720" height="528" muted loop playsinline preload="none" aria-label="从图片中提取轮廓，再用本轮画出来（“傅里叶”模板）。"><source src="/assets/demo/image.webm" type="video/webm"><source src="/assets/demo/image.mp4" type="video/mp4"></video><figcaption>从图片中提取轮廓，再用本轮画出来（“傅里叶”模板）。</figcaption></figure><figure class="demo"><video poster="/assets/demo/text.jpg" width="720" height="528" muted loop playsinline preload="none" aria-label="把文字“Fourier ♥”转换成轮廓。"><source src="/assets/demo/text.webm" type="video/webm"><source src="/assets/demo/text.mp4" type="video/mp4"></video><figcaption>把文字“Fourier ♥”转换成轮廓。</figcaption></figure></div>
       <h3>让图片转换效果更好的技巧</h3>
       <ul>
         <li>背景单一、轮廓清晰的图片效果最稳定。</li>
@@ -219,6 +221,7 @@
 
     <section id="effects">
       <h2><small>Effects</small>效果</h2>
+      <figure class="demo"><video poster="/assets/demo/effects.jpg" width="720" height="528" muted loop playsinline preload="none" aria-label="镜像 + 彩虹 + 闪光。"><source src="/assets/demo/effects.webm" type="video/webm"><source src="/assets/demo/effects.mp4" type="video/mp4"></video><figcaption>镜像 + 彩虹 + 闪光。</figcaption></figure>
       <table>
         <tr><th>彩虹</th><td>用彩虹渐变色画出轨迹。</td></tr>
         <tr><th>保留轨迹</th><td>把画完的轨迹留在画面上。关闭后会反复画同一个图形。</td></tr>
@@ -283,6 +286,7 @@
       <h3>3. 把圆连起来重新画线</h3>
       <div class="fm">z(t) = Σ<sub>k</sub> X[k] · e<sup>ikt</sup>　(0 ≤ t &lt; 2π)</div>
       <p>按半径从大到小，把每个圆的圆心放在前一个圆的末端，最后一个圆的末端就会画出 z(t)。这就是<b>本轮</b>（周转圆）。半径越大的分量对形状影响越大，所以只用前几个圆就能看出大致轮廓，圆越多细节越丰富。<b>JPEG 图片压缩</b>也基于同样的思想：舍弃影响较小的频率分量。</p>
+      <figure class="demo"><video poster="/assets/demo/converge.jpg" width="720" height="528" muted loop playsinline preload="none" aria-label="圆的数量 n 越多，形状越接近原来的猫。"><source src="/assets/demo/converge.webm" type="video/webm"><source src="/assets/demo/converge.mp4" type="video/mp4"></video><figcaption>圆的数量 n 越多，形状越接近原来的猫。</figcaption></figure>
       <div class="note">本轮最早是古希腊天文学为了解释行星运动而提出的。从傅里叶级数的角度看，只要叠加足够多的圆，就能表示任何周期性的轨迹。</div>
     </section>
 
@@ -307,6 +311,19 @@
   <div class="langs"><a href="/guide/" hreflang="ja" lang="ja">日本語</a><a href="/guide/en/" hreflang="en" lang="en">English</a><a href="/guide/es/" hreflang="es" lang="es">Español</a><a href="/guide/pt/" hreflang="pt" lang="pt">Português</a><a href="/guide/zh/" hreflang="zh-Hans" lang="zh-Hans" aria-current="page">中文</a></div>
   <p>&copy; Ike mfr ・ <a href="/?lang=zh">FouriTre</a> ・ <a href="https://buymeacoffee.com/ike_mfr">Buy Me a Coffee</a></p>
 </footer>
+<script>
+(function () {
+  var vids = document.querySelectorAll('.demo video');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    vids.forEach(function (v) { v.controls = true; v.preload = 'metadata'; });
+    return;
+  }
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.play().catch(function () {}); } else { e.target.pause(); } });
+  }, { threshold: 0.35 });
+  vids.forEach(function (v) { io.observe(v); });
+})();
+</script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

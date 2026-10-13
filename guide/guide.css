@@ -83,3 +83,8 @@ footer a{color:var(--t2)}
 .langs a[aria-current]{color:var(--tx);border-color:var(--ln2);background:var(--sf3)}
 footer .langs{justify-content:center;margin-bottom:10px}
 .hero .langs{margin-top:14px}
+.demo{margin:18px 0}
+.demo video{width:100%;height:auto;display:block;border-radius:14px;border:1px solid var(--ln2);background:#05070d}
+.demo2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+.demo2 .demo{margin:0}
+@media (max-width:860px){.demo2{grid-template-columns:1fr}}
