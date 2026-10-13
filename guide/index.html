@@ -134,7 +134,7 @@
         <li><b>キャンバスに一筆書きする</b><br>マウスや指でドラッグして線を描き、離すと変換が始まります。円の連鎖が現れて、あなたの線を描き直します。</li>
         <li><b>円の数や速さを調整する</b><br>右側のパネル（スマホは右上の設定ボタン）で「円の数」や「描画時間」を変えてみましょう。気に入ったら「書き出し」で画像や動画にできます。</li>
       </ol>
-      <figure class="demo"><video src="/assets/demo/quickstart-ja.mp4" poster="/assets/demo/quickstart-ja.jpg" width="960" height="560" muted loop playsinline preload="none" aria-label="一筆書きすると、円の連鎖がその線を描き直します。「円の数」を減らすと形が丸くなります。"></video><figcaption>一筆書きすると、円の連鎖がその線を描き直します。「円の数」を減らすと形が丸くなります。</figcaption></figure>
+      <figure class="demo"><video poster="/assets/demo/quickstart-ja.jpg" width="960" height="560" muted loop playsinline preload="none" aria-label="一筆書きすると、円の連鎖がその線を描き直します。「円の数」を減らすと形が丸くなります。"><source src="/assets/demo/quickstart-ja.webm" type="video/webm"><source src="/assets/demo/quickstart-ja.mp4" type="video/mp4"></video><figcaption>一筆書きすると、円の連鎖がその線を描き直します。「円の数」を減らすと形が丸くなります。</figcaption></figure>
       <div class="note">ヒント：描くのが面倒なら「テンプレ」タブのハートや星、または画面下の「自動生成」ボタンを押すだけでも動きを楽しめます。</div>
     </section>
 
@@ -147,7 +147,7 @@
         <div class="card"><h3>テキスト</h3><p>文字や絵文字の輪郭を描きます。複数行にも対応し、手持ちのフォントファイル（TTF / OTF / WOFF）も読み込めます。</p></div>
         <div class="card"><h3>テンプレ</h3><p>星・ハート・無限大・π・蝶・矩形波・猫・渦巻・DNA・フーリエの肖像を、ワンクリックで呼び出せます。</p></div>
       </div>
-      <div class="demo2"><figure class="demo"><video src="/assets/demo/image.mp4" poster="/assets/demo/image.jpg" width="720" height="528" muted loop playsinline preload="none" aria-label="画像から抽出した輪郭をエピサイクルで描く様子（テンプレの「フーリエ」）。"></video><figcaption>画像から抽出した輪郭をエピサイクルで描く様子（テンプレの「フーリエ」）。</figcaption></figure><figure class="demo"><video src="/assets/demo/text.mp4" poster="/assets/demo/text.jpg" width="720" height="528" muted loop playsinline preload="none" aria-label="テキスト「Fourier ♥」を輪郭に変換。"></video><figcaption>テキスト「Fourier ♥」を輪郭に変換。</figcaption></figure></div>
+      <div class="demo2"><figure class="demo"><video poster="/assets/demo/image.jpg" width="720" height="528" muted loop playsinline preload="none" aria-label="画像から抽出した輪郭をエピサイクルで描く様子（テンプレの「フーリエ」）。"><source src="/assets/demo/image.webm" type="video/webm"><source src="/assets/demo/image.mp4" type="video/mp4"></video><figcaption>画像から抽出した輪郭をエピサイクルで描く様子（テンプレの「フーリエ」）。</figcaption></figure><figure class="demo"><video poster="/assets/demo/text.jpg" width="720" height="528" muted loop playsinline preload="none" aria-label="テキスト「Fourier ♥」を輪郭に変換。"><source src="/assets/demo/text.webm" type="video/webm"><source src="/assets/demo/text.mp4" type="video/mp4"></video><figcaption>テキスト「Fourier ♥」を輪郭に変換。</figcaption></figure></div>
       <h3>画像をきれいに変換するコツ</h3>
       <ul>
         <li>背景が単色で、輪郭のはっきりした画像ほど結果が安定します。</li>
@@ -170,7 +170,7 @@
 
     <section id="effects">
       <h2><small>Effects</small>エフェクト</h2>
-      <figure class="demo"><video src="/assets/demo/effects.mp4" poster="/assets/demo/effects.jpg" width="720" height="528" muted loop playsinline preload="none" aria-label="鏡像＋虹色＋キラキラを組み合わせた例。"></video><figcaption>鏡像＋虹色＋キラキラを組み合わせた例。</figcaption></figure>
+      <figure class="demo"><video poster="/assets/demo/effects.jpg" width="720" height="528" muted loop playsinline preload="none" aria-label="鏡像＋虹色＋キラキラを組み合わせた例。"><source src="/assets/demo/effects.webm" type="video/webm"><source src="/assets/demo/effects.mp4" type="video/mp4"></video><figcaption>鏡像＋虹色＋キラキラを組み合わせた例。</figcaption></figure>
       <table>
         <tr><th>虹色</th><td>軌跡を虹色のグラデーションで描きます。</td></tr>
         <tr><th>残画</th><td>描き終わった軌跡を画面に残します。オフにすると同じ形を繰り返し描き続けます。</td></tr>
@@ -235,7 +235,7 @@
       <h3>3. 円をつなげて描き直す</h3>
       <div class="fm">z(t) = Σ<sub>k</sub> X[k] · e<sup>ikt</sup>　(0 ≤ t &lt; 2π)</div>
       <p>半径の大きい順に円の中心を前の円の先端に置いていくと、最後の円の先端が z(t) を描きます。これが<b>エピサイクル</b>（周転円）です。半径の大きい成分ほど形への影響が大きいので、上位の数個だけでも大まかな形が現れ、円を増やすほど細部が加わります。<b>JPEG 画像の圧縮</b>も、同じように「影響の小さい周波数成分を捨てる」という考え方に基づいています。</p>
-      <figure class="demo"><video src="/assets/demo/converge.mp4" poster="/assets/demo/converge.jpg" width="720" height="528" muted loop playsinline preload="none" aria-label="円の数 n を増やすほど、元の形（猫）に近づいていきます。"></video><figcaption>円の数 n を増やすほど、元の形（猫）に近づいていきます。</figcaption></figure>
+      <figure class="demo"><video poster="/assets/demo/converge.jpg" width="720" height="528" muted loop playsinline preload="none" aria-label="円の数 n を増やすほど、元の形（猫）に近づいていきます。"><source src="/assets/demo/converge.webm" type="video/webm"><source src="/assets/demo/converge.mp4" type="video/mp4"></video><figcaption>円の数 n を増やすほど、元の形（猫）に近づいていきます。</figcaption></figure>
       <div class="note">エピサイクルは、もともと古代ギリシャの天文学で惑星の動きを説明するために考えられたものです。フーリエ級数の視点から見ると、円を十分に重ねればどんな周期的な軌道でも表せることになります。</div>
     </section>
 

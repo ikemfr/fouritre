@@ -216,9 +216,10 @@ DEMO_SIZE = {'quickstart': (960, 560), 'image': (720, 528), 'text': (720, 528), 
 def demo(name, caption, src=None):
     w, h = DEMO_SIZE[name]
     src = src or name
-    return (f'<figure class="demo"><video src="/assets/demo/{src}.mp4" poster="/assets/demo/{src}.jpg" '
-            f'width="{w}" height="{h}" muted loop playsinline preload="none" aria-label="{caption}"></video>'
-            f'<figcaption>{caption}</figcaption></figure>')
+    return (f'<figure class="demo"><video poster="/assets/demo/{src}.jpg" '
+            f'width="{w}" height="{h}" muted loop playsinline preload="none" aria-label="{caption}">'
+            f'<source src="/assets/demo/{src}.webm" type="video/webm"><source src="/assets/demo/{src}.mp4" type="video/mp4">'
+            f'</video><figcaption>{caption}</figcaption></figure>')
 
 
 # Play demo videos only while visible; respect reduced motion.
